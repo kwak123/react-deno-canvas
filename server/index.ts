@@ -1,14 +1,9 @@
-import {
-  serve,
-  ServerRequest,
-} from 'https://deno.land/std@v0.36.0/http/server.ts';
+import { serve } from 'https://deno.land/std@v0.36.0/http/server.ts';
 
 const s = serve({ port: 3000 });
 
 (async function() {
   for await (const req of s) {
-    const sReq: ServerRequest = req;
-    console.log(sReq.method);
     req.respond({ body: 'Hello World\n' });
   }
 })();

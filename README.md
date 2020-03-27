@@ -10,3 +10,5 @@ After adding deps:
 
 Starting server:
 `deno --alow-net server/index.ts`
+
+You will likely need to change the `http://` and `https://` module resolution directories in `tsconfig.json`
