@@ -1,5 +1,0 @@
-{
-  "linterOptions": {
-    "exclude": ["lib.deno_runtime.d.ts"]
-  }
-}
