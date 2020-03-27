@@ -1,0 +1,1 @@
+deno run --allow-net index.ts 3000
