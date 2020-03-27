@@ -3,14 +3,13 @@
     "allowJs": true,
     "baseUrl": ".",
     "esModuleInterop": true,
-    "noLib": true,
     "module": "amd",
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
       // Paths have to be relative to `baseUrl`
-      "http://*": ["../../Library/Caches/deno/gen/http/*"],
-      "https://*": ["../../Library/Caches/deno/gen/https/*"]
+      "http://*": ["../../../../Library/Caches/deno/gen/http/*"],
+      "https://*": ["../../../../Library/Caches/deno/gen/https/*"]
     },
     "plugins": [
       {
@@ -22,7 +21,8 @@
     ],
     "pretty": true,
     "resolveJsonModule": true,
-    "target": "ESNext"
+    "target": "ES2016"
   },
-  "include": ["./**/*.ts"]
+  "include": ["./**/*.ts"],
+  "exclude": ["lib.deno_runtime.d.ts"]
 }

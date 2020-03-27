@@ -3,6 +3,7 @@
 /// <reference no-default-lib="true" />
 /// <reference lib="esnext" />
 
+// @ts-ignore
 declare namespace Deno {
   /** The current process id of the runtime. */
   export let pid: number;
@@ -3592,6 +3593,7 @@ declare namespace __eventTarget {
   }
   export const eventTargetAssignedSlot: unique symbol;
   export const eventTargetHasActivationBehavior: unique symbol;
+  // @ts-ignore
   export class EventTarget implements __domTypes.EventTarget {
     [__domTypes.eventTargetHost]: __domTypes.EventTarget | null;
     [__domTypes.eventTargetListeners]: {

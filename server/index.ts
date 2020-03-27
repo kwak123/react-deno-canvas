@@ -6,8 +6,9 @@ import {
 const s = serve({ port: 3000 });
 
 (async function() {
-  for await (const req of s as ServerRequest) {
-    console.log(req.method);
+  for await (const req of s) {
+    const sReq: ServerRequest = req;
+    console.log(sReq.method);
     req.respond({ body: 'Hello World\n' });
   }
 })();

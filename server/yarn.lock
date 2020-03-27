@@ -18,7 +18,7 @@ clone-deep@^0.2.4:
     lazy-cache "^1.0.3"
     shallow-clone "^0.1.2"
 
-deno_ls_plugin@^0.1.0:
+deno_ls_plugin@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/deno_ls_plugin/-/deno_ls_plugin-0.1.0.tgz#1c9cfdc7e550eb45d59fce3109a9205a0db96b54"
   integrity sha512-mUV2q6Alx3p1B21R5yVIc/wmeCcPftz/CcbsY0kbV/djyFRLZU/Gqmn6sqvMCm2zb+suHinPE99QhySIFuz5hw==
@@ -138,7 +138,7 @@ shallow-clone@^0.1.2:
     lazy-cache "^0.2.3"
     mixin-object "^2.0.1"
 
-typescript-deno-plugin@^1.2.7:
+typescript-deno-plugin@1.2.7:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/typescript-deno-plugin/-/typescript-deno-plugin-1.2.7.tgz#ea808c839bab863f3db6e63e4c55d9a53dd2f2bb"
   integrity sha512-I3lNbFRMGEtWLOe+pzLBRv1inU1SX3wuv/9ur0h5ue0Oh80qgdJQCRwGGPQ2d2JgJxwcr2Yv292Ze2sU7OAFVg==
@@ -146,7 +146,7 @@ typescript-deno-plugin@^1.2.7:
     merge-deep "^3.0.2"
     mock-require "^3.0.3"
 
-typescript@^3.8.3:
+typescript@3.8.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
   integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
