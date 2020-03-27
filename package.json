@@ -1,0 +1,12 @@
+{
+  "name": "deno_example",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.ts",
+  "private": true,
+  "devDependencies": {
+    "deno_ls_plugin": "^0.1.0",
+    "typescript": "^3.8.3",
+    "typescript-deno-plugin": "^1.2.7"
+  }
+}

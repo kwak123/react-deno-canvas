@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "noLib": true,
+    "module": "amd",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "paths": {
+      // Paths have to be relative to `baseUrl`
+      "http://*": ["../../Library/Caches/deno/gen/http/**.*"],
+      "https://*": ["../../Library/Caches/deno/gen/https/**.*"]
+    },
+    "plugins": [
+      {
+        "name": "deno_ls_plugin"
+      },
+      {
+        "name": "typescript-deno-plugin"
+      }
+    ],
+    "pretty": true,
+    "resolveJsonModule": true,
+    "target": "ESNext"
+  },
+  "include": ["./**/*.ts"]
+}
