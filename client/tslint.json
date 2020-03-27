@@ -1,0 +1,8 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended"],
+  "rules": {
+    "arrow-parens": false,
+    "no-unused-variable": true
+  }
+}
