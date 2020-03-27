@@ -1,20 +1,12 @@
-Will probably need to do first to fetch deps (and again with an additional --write-lock whenever you import a new dep).
+## Getting it running
 
-## Starting up Server
+I recommend opening this up as two separate work spaces, one for the client, and one for the server.
+They'll be linked via a `dist` file that will be in the root directory.
 
-On first load:
-`deno fetch deps.ts --lock=lock.json --reload`
+This is an unfortunate evil due to the VSCode Deno plugin, namely around module resolution (requiring `.ts`, where to resolve against re: `baseUrl`, etc).
 
-After adding deps:
-`deno fetch deps.ts --lock=lock.json --reload --lock-write`
+Deno is still building up, but it's something!
 
-Starting server:
-`deno --alow-net server/index.ts`
+TODOS:
 
-You will likely need to change the `http://` and `https://` module resolution directories in `tsconfig.json`
-
-## My personal Deno notes
-
-You _need_ the Axetroy Deno plugin for this to work at all efficiently.
-The `tsconfig.json` in here is the only effective one I've seen to get this to work as you'd expect.
-There's a couple `@ts-ignore` lines you'll have to chuck into the lib file to get things to work.
+- [ ] Dockerize both and deploy as docker-compose
