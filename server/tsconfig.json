@@ -9,8 +9,8 @@
     "noEmit": true,
     "paths": {
       // Paths have to be relative to `baseUrl`
-      "http://*": ["../../Library/Caches/deno/gen/http/**.*"],
-      "https://*": ["../../Library/Caches/deno/gen/https/**.*"]
+      "http://*": ["../../Library/Caches/deno/gen/http/*"],
+      "https://*": ["../../Library/Caches/deno/gen/https/*"]
     },
     "plugins": [
       {

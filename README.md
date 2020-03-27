@@ -7,3 +7,6 @@ On first load:
 
 After adding deps:
 `deno fetch index.ts --lock=lock.json --reload --lock-write`
+
+Starting server:
+`deno --alow-net server/index.ts`
