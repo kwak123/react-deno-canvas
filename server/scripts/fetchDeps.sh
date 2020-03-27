@@ -1,0 +1,1 @@
+deno fetch ./deps.ts --lock=lock.json --reload
