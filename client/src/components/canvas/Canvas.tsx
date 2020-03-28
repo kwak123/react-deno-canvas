@@ -1,17 +1,22 @@
 import React, { useState, useRef, MouseEvent } from "react"
 
+interface Position {
+  x: number
+  y: number
+}
+
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
   const whiteboardRef = useRef<HTMLCanvasElement>(null)
   const [shouldDraw, setShouldDraw] = useState(false)
   const [isDot, setIsDot] = useState(false)
-  const [lastX, setLastX] = useState(0)
-  const [lastY, setLastY] = useState(0)
-  const [currX, setCurrX] = useState(0)
-  const [currY, setCurrY] = useState(0)
+  const [last, setLast] = useState<Position>({ x: 0, y: 0 })
+  const [curr, setCurr] = useState<Position>({ x: 0, y: 0 })
 
   const draw = (ctx: CanvasRenderingContext2D) => {
     ctx.beginPath()
+    const { x: lastX, y: lastY } = last
+    const { x: currX, y: currY } = curr
     ctx.moveTo(lastX, lastY)
     ctx.lineTo(currX, currY)
     ctx.strokeStyle = "black"
@@ -23,38 +28,42 @@ const Canvas = () => {
   const onMouseDown = (event: MouseEvent) => {
     const { current: whiteboard } = whiteboardRef
     const ctx = whiteboard.getContext("2d")
-    setLastX(currX)
-    setLastY(currY)
-    setCurrX(event.clientX - whiteboard.offsetLeft)
-    setCurrY(event.clientY - whiteboard.offsetTop)
+    // Need to move x/y here
+    const newX = event.clientX - whiteboard.offsetLeft
+    const newY = event.clientY - whiteboard.offsetTop
+    setLast({ x: newX, y: newY })
+    setCurr({ x: newX, y: newY })
     setShouldDraw(true)
     setIsDot(true)
 
     if (isDot) {
       ctx.beginPath()
       ctx.fillStyle = "black"
-      ctx.fillRect(currX, currY, 2, 2)
+      ctx.fillRect(newX, newY, 2, 2)
       ctx.closePath()
       setIsDot(false)
     }
   }
 
-  const onMouseUp = () => {
+  const onMouseUp = (event: MouseEvent) => {
     setShouldDraw(false)
-    setLastX(currX)
-    setLastY(currY)
   }
 
   const onMouseMove = (event: MouseEvent) => {
     const { current: whiteboard } = whiteboardRef
     if (shouldDraw) {
-      setLastX(currX)
-      setLastY(currY)
-      setCurrX(event.clientX - whiteboard.offsetLeft)
-      setCurrY(event.clientY - whiteboard.offsetTop)
-      draw(whiteboard.getContext("2d"))
+      const { x: currX, y: currY } = curr
+      const newX = event.clientX - whiteboard.offsetLeft
+      const newY = event.clientY - whiteboard.offsetTop
+      setLast({ x: currX, y: currY })
+      setCurr({ x: newX, y: newY })
     }
   }
+
+  React.useEffect(() => {
+    const { current: whiteboard } = whiteboardRef
+    draw(whiteboard.getContext("2d"))
+  }, [curr])
 
   return (
     <canvas
