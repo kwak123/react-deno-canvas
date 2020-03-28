@@ -2,44 +2,38 @@ import React, { useState, useRef, MouseEvent, TouchEvent } from "react"
 import styled from "styled-components"
 import { useSelector, useDispatch } from "react-redux"
 
-import { addPath, undoPath } from "../../store/canvas/actions"
-import { selectPaths } from "../../store/canvas/selectors"
+import { addStroke, undoStroke } from "../../store/canvas/actions"
+import { CanvasStroke, CanvasCoordinate } from "../../store/canvas/reducers"
+import { selectStrokes } from "../../store/canvas/selectors"
 
 interface Position {
   x: number
   y: number
 }
 
-interface CanvasStroke {
-  lastX: number
-  lastY: number
-  currX: number
-  currY: number
-}
-
 const HtmlCanvas = styled.canvas``
 
 export class CanvasHelper {
-  strokes: CanvasStroke[]
+  stroke: CanvasStroke
 
   start() {
-    this.strokes = []
+    this.stroke = []
   }
 
-  append(canvasStroke: CanvasStroke) {
-    if (this.strokes) {
-      this.strokes.push(canvasStroke)
+  append(canvasCoordinate: CanvasCoordinate) {
+    if (this.stroke) {
+      this.stroke.push(canvasCoordinate)
     }
   }
 
   close() {
-    if (!this.strokes || !this.strokes.length) {
+    if (!this.stroke || !this.stroke.length) {
       return null
     }
 
-    const finishedStrokes = this.strokes
-    this.strokes = null
-    return finishedStrokes
+    const finishedStroke = this.stroke
+    this.stroke = null
+    return finishedStroke
   }
 }
 
@@ -47,16 +41,14 @@ const canvasHelper = new CanvasHelper()
 
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
-  // const dispatch = useDispatch()
-  // const paths = useSelector(selectPaths)
+  const dispatch = useDispatch()
+  const strokes = useSelector(selectStrokes)
   const whiteboardRef = useRef<HTMLCanvasElement>(null)
   const [shouldDraw, setShouldDraw] = useState(false)
   const [isDot, setIsDot] = useState(false)
   const [isMultiFinger, setIsMultiFinger] = useState(false)
   const [last, setLast] = useState<Position>({ x: 0, y: 0 })
   const [curr, setCurr] = useState<Position>({ x: 0, y: 0 })
-
-  const [strokes, setStrokes] = useState<CanvasStroke[][]>([])
 
   const draw = (
     ctx: CanvasRenderingContext2D,
@@ -127,18 +119,18 @@ const Canvas = () => {
     const finishedStroke = canvasHelper.close()
 
     if (finishedStroke) {
-      // dispatch(addPath(finishedPath))
-      setStrokes([...strokes, finishedStroke])
+      dispatch(addStroke(finishedStroke))
+      // setStrokes([...strokes, finishedStroke])
       refreshCanvas()
     }
   }
 
   const undoDraw = () => {
     clearCanvas()
-    // dispatch(undoPath())
-    const newStrokes = [...strokes]
-    newStrokes.pop()
-    setStrokes(newStrokes)
+    dispatch(undoStroke())
+    // const newStrokes = [...strokes]
+    // newStrokes.pop()
+    // setStrokes(newStrokes)
     refreshCanvas()
   }
 
@@ -151,9 +143,6 @@ const Canvas = () => {
   const refreshCanvas = () => {
     const { current: whiteboard } = whiteboardRef
     const context = whiteboard.getContext("2d")
-    // paths.forEach((path) => {
-    //   whiteboardRef.current.getContext("2d").stroke(path)
-    // })
     strokes.forEach((stroke) => {
       stroke.forEach(({ lastX, lastY, currX, currY }) => {
         draw(context, { x: lastX, y: lastY }, { x: currX, y: currY })

@@ -1,12 +1,14 @@
 import { Reducer, Action } from "@reduxjs/toolkit"
 import { CANVAS_ACTION, AddLineAction } from "./actions"
 
-export interface CanvasStroke {
+export interface CanvasCoordinate {
   lastX: number
   lastY: number
   currX: number
   currY: number
 }
+
+export type CanvasStroke = CanvasCoordinate[]
 
 export interface CanvasStore {
   strokes: CanvasStroke[]
