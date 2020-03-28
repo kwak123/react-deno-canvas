@@ -4,7 +4,7 @@ import store from "../store"
 import { CanvasStroke } from "../store/canvas/reducers"
 
 // TODO: Fix this in the future
-const socketUrl = "wss://732b3a8d.ngrok.io/api/set-socket"
+const socketUrl = "wss://bcab44a0.ngrok.io/api/set-socket"
 let socket: WebSocket
 
 export class SocketHelper {
@@ -19,6 +19,10 @@ export class SocketHelper {
         // console.log("message", message)
         const strokes: CanvasStroke[] = JSON.parse(message.data as string)
         store.dispatch(setStrokes(strokes))
+      }
+
+      socket.onerror = (e) => {
+        console.error(e)
       }
     }
   }

@@ -1,1 +1,1 @@
-deno run --allow-net --allow-read ./index.ts 8000
+deno run --allow-net --allow-read ./index.ts 3001

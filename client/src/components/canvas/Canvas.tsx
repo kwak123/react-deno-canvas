@@ -162,7 +162,9 @@ const Canvas = () => {
   const onTouchEnd = (event: TouchEvent) => {
     setIsMultiFinger(false)
     setShouldDraw(false)
+    handleStopDraw()
   }
+
   const onTouchMove = (event: TouchEvent) => {
     if (shouldDraw && !isMultiFinger) {
       handleMoveDraw({
