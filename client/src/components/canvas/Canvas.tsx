@@ -5,11 +5,32 @@ const Canvas = () => {
 
   React.useEffect(() => {
     const ctx = whiteboard.current.getContext("2d")
-    ctx.fillRect(10, 10, 50, 50)
+    ctx.beginPath()
+    ctx.moveTo(100, 100)
+    ctx.fill()
   })
 
+  const onMouseDown = () => {
+    /* Start drawing */
+  }
+  const onMouseUp = () => {
+    /* Stop drawing */
+  }
+  const onMouseMove = () => {
+    /* Draw */
+  }
+
   return (
-    <canvas ref={whiteboard} id="whiteboard" width="600" height="600"></canvas>
+    <canvas
+      ref={whiteboard}
+      id="whiteboard"
+      width="600"
+      height="600"
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseMove={onMouseMove}
+      onMouseOut={onMouseUp}
+    ></canvas>
   )
 }
 
