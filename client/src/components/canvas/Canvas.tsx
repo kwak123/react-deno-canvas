@@ -64,15 +64,15 @@ const Canvas = () => {
     setLast({ x: newX, y: newY })
     setCurr({ x: newX, y: newY })
     setShouldDraw(true)
-    setIsDot(true)
+    // setIsDot(true)
 
-    if (isDot) {
-      ctx.beginPath()
-      ctx.fillStyle = "black"
-      ctx.fillRect(newX, newY, 2, 2)
-      ctx.closePath()
-      setIsDot(false)
-    }
+    // if (isDot) {
+    //   ctx.beginPath()
+    //   ctx.fillStyle = "black"
+    //   ctx.fillRect(newX, newY, 2, 2)
+    //   ctx.closePath()
+    //   setIsDot(false)
+    // }
   }
 
   const handleMoveDraw = ({

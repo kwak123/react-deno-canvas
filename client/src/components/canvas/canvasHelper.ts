@@ -8,7 +8,7 @@ export class CanvasHelper {
   }
 
   append(canvasCoordinate: CanvasCoordinate) {
-    if (this.stroke) {
+    if (canvasCoordinate && this.stroke) {
       this.stroke.push(canvasCoordinate)
     }
   }
