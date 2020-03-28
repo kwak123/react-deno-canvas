@@ -1,1 +1,3 @@
-export const getLines = (state) => state.canvas.lines
+import { GlobalState } from "../index"
+
+export const selectPaths = (state: GlobalState) => state.canvas.paths

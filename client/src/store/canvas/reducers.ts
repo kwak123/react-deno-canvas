@@ -2,11 +2,11 @@ import { Reducer, Action } from "@reduxjs/toolkit"
 import { CANVAS_ACTION, AddLineAction } from "./actions"
 
 export interface CanvasStore {
-  lines: Path2D[]
+  paths: Path2D[]
 }
 
 export const initialState: CanvasStore = {
-  lines: [],
+  paths: [],
 }
 
 const canvasReducer: Reducer<CanvasStore, Action> = (
@@ -16,13 +16,13 @@ const canvasReducer: Reducer<CanvasStore, Action> = (
   switch (action.type) {
     case CANVAS_ACTION.ADD_LINE:
       return {
-        lines: [...state.lines, (action as AddLineAction).line],
+        paths: [...state.paths, (action as AddLineAction).path],
       }
     case CANVAS_ACTION.UNDO_LINE: {
-      const newLines = [...state.lines]
-      newLines.pop()
+      const newPaths = [...state.paths]
+      newPaths.pop()
       return {
-        lines: newLines,
+        paths: newPaths,
       }
     }
     default:

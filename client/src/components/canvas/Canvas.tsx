@@ -1,14 +1,14 @@
 import React, { useState, useRef, MouseEvent, TouchEvent } from "react"
 import styled from "styled-components"
 
+import { selectPaths } from "../../store/canvas/selectors"
+
 interface Position {
   x: number
   y: number
 }
 
 const HtmlCanvas = styled.canvas``
-
-let currentLine: Path2D[] = []
 
 export class CanvasHelper {
   path: Path2D
@@ -55,7 +55,6 @@ const Canvas = () => {
     ctx.strokeStyle = "black"
     ctx.lineWidth = 2
     ctx.stroke(path)
-    currentLine.push(path)
     canvasHelper.appendPath(path)
   }
 

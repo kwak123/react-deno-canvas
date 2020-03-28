@@ -1,53 +1,53 @@
 import { createStore, combineReducers, PreloadedState } from "@reduxjs/toolkit"
 import canvasReducer, { initialState, CanvasStore } from "../canvas/reducers"
-import { addLine, undoLine } from "../canvas/actions"
+import { addPaths, undoPaths } from "../canvas/actions"
 
 const getMockStore = (state = initialState) => {
   return createStore(canvasReducer, state as PreloadedState<CanvasStore>)
 }
 
 describe("canvas integration", () => {
-  describe("addLine", () => {
-    it("should add line to lines", () => {
+  describe("addPaths", () => {
+    it("should add line to paths", () => {
       const store = getMockStore()
-      const mockLine = new Path2D()
-      store.dispatch(addLine(mockLine))
+      const mockPath = new Path2D()
+      store.dispatch(addPaths(mockPath))
       expect(store.getState()).toEqual({
-        lines: [mockLine],
+        paths: [mockPath],
       })
     })
 
     it("should add line to end of lines", () => {
-      const oldLine = new Path2D()
-      const newLine = new Path2D()
-      const state = { lines: [oldLine] }
+      const oldPath = new Path2D()
+      const newPath = new Path2D()
+      const state = { paths: [oldPath] }
       const store = getMockStore(state)
-      store.dispatch(addLine(newLine))
+      store.dispatch(addPaths(newPath))
       expect(store.getState()).toEqual({
-        lines: [oldLine, newLine],
+        paths: [oldPath, newPath],
       })
     })
   })
 
-  describe("undoLine", () => {
+  describe("undoPaths", () => {
     it("should undo existing line", () => {
-      const existingLine = new Path2D()
-      const state = { lines: [existingLine] }
+      const oldPath = new Path2D()
+      const state = { paths: [oldPath] }
       const store = getMockStore(state)
-      store.dispatch(undoLine())
+      store.dispatch(undoPaths())
       expect(store.getState()).toEqual({
-        lines: [],
+        paths: [],
       })
     })
 
     it("should undo only the line", () => {
-      const lineToKeep = new Path2D()
-      const lineToRemove = new Path2D()
-      const state = { lines: [lineToKeep, lineToRemove] }
+      const pathToKeep = new Path2D()
+      const pathToRemove = new Path2D()
+      const state = { paths: [pathToKeep, pathToRemove] }
       const store = getMockStore(state)
-      store.dispatch(undoLine())
+      store.dispatch(undoPaths())
       expect(store.getState()).toEqual({
-        lines: [lineToKeep],
+        paths: [pathToKeep],
       })
     })
   })

@@ -6,16 +6,16 @@ export enum CANVAS_ACTION {
 }
 
 export interface AddLineAction extends Action<CANVAS_ACTION> {
-  line: Path2D
+  path: Path2D
 }
 
 export interface UndoLineAction extends Action<CANVAS_ACTION> {}
 
-export const addLine: ActionCreator<AddLineAction> = (line: Path2D) => ({
+export const addPaths: ActionCreator<AddLineAction> = (path: Path2D) => ({
   type: CANVAS_ACTION.ADD_LINE,
-  line,
+  path,
 })
 
-export const undoLine: ActionCreator<UndoLineAction> = () => ({
+export const undoPaths: ActionCreator<UndoLineAction> = () => ({
   type: CANVAS_ACTION.UNDO_LINE,
 })
