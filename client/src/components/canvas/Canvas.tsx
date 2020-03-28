@@ -8,6 +8,8 @@ interface Position {
 
 const HtmlCanvas = styled.canvas``
 
+let currentLine: Path2D[] = []
+
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
   const whiteboardRef = useRef<HTMLCanvasElement>(null)
@@ -16,6 +18,7 @@ const Canvas = () => {
   const [isMultiFinger, setIsMultiFinger] = useState(false)
   const [last, setLast] = useState<Position>({ x: 0, y: 0 })
   const [curr, setCurr] = useState<Position>({ x: 0, y: 0 })
+  const [allLines, setAllLines] = useState<Path2D[][]>([])
 
   const draw = (ctx: CanvasRenderingContext2D) => {
     const path = new Path2D()
@@ -27,6 +30,8 @@ const Canvas = () => {
     ctx.lineWidth = 2
     path.closePath()
     ctx.stroke(path)
+    currentLine.push(path)
+    return path
   }
 
   const handleStartDraw = ({
@@ -71,6 +76,19 @@ const Canvas = () => {
     draw(whiteboard.getContext("2d"))
   }
 
+  const handleStopDraw = () => {
+    if (currentLine.length) {
+      setAllLines([...allLines, currentLine])
+      currentLine = []
+    }
+  }
+
+  const undoDraw = () => {
+    const lines = [...allLines]
+    lines.pop()
+    setAllLines(lines)
+  }
+
   const onMouseDown = (event: MouseEvent) => {
     handleStartDraw({
       clientX: event.clientX,
@@ -80,6 +98,7 @@ const Canvas = () => {
 
   const onMouseUp = (event: MouseEvent) => {
     setShouldDraw(false)
+    handleStopDraw()
   }
 
   const onMouseMove = (event: MouseEvent) => {
@@ -117,23 +136,26 @@ const Canvas = () => {
   }
 
   return (
-    <HtmlCanvas
-      ref={whiteboardRef}
-      style={{ touchAction: isMultiFinger ? "auto" : "pinch-zoom" }}
-      id="whiteboard"
-      width="600"
-      height="600"
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseMove={onMouseMove}
-      onMouseOut={onMouseUp}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-      onTouchMove={onTouchMove}
-      onTouchCancel={onTouchEnd}
-    >
-      {/* Need to add fallback */}
-    </HtmlCanvas>
+    <>
+      <button onClick={undoDraw}>Undo</button>
+      <HtmlCanvas
+        ref={whiteboardRef}
+        style={{ touchAction: isMultiFinger ? "auto" : "pinch-zoom" }}
+        id="whiteboard"
+        width="600"
+        height="600"
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onMouseMove={onMouseMove}
+        onMouseOut={onMouseUp}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        onTouchMove={onTouchMove}
+        onTouchCancel={onTouchEnd}
+      >
+        {/* Need to add fallback */}
+      </HtmlCanvas>
+    </>
   )
 }
 
