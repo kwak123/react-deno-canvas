@@ -1,3 +1,3 @@
 import { GlobalState } from "../index"
 
-export const selectPaths = (state: GlobalState) => state.canvas.paths
+export const selectStrokes = (state: GlobalState) => state.canvas.strokes

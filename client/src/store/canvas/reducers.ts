@@ -1,12 +1,19 @@
 import { Reducer, Action } from "@reduxjs/toolkit"
 import { CANVAS_ACTION, AddLineAction } from "./actions"
 
+export interface CanvasStroke {
+  lastX: number
+  lastY: number
+  currX: number
+  currY: number
+}
+
 export interface CanvasStore {
-  paths: Path2D[]
+  strokes: CanvasStroke[]
 }
 
 export const initialState: CanvasStore = {
-  paths: [],
+  strokes: [],
 }
 
 const canvasReducer: Reducer<CanvasStore, Action> = (
@@ -16,13 +23,13 @@ const canvasReducer: Reducer<CanvasStore, Action> = (
   switch (action.type) {
     case CANVAS_ACTION.ADD_LINE:
       return {
-        paths: [...state.paths, (action as AddLineAction).path],
+        strokes: [...state.strokes, (action as AddLineAction).stroke],
       }
     case CANVAS_ACTION.UNDO_LINE: {
-      const newPaths = [...state.paths]
-      newPaths.pop()
+      const newStrokes = [...state.strokes]
+      newStrokes.pop()
       return {
-        paths: newPaths,
+        strokes: newStrokes,
       }
     }
     default:
