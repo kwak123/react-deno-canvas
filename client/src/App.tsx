@@ -1,13 +1,14 @@
 import * as React from "react"
+import { Provider } from "react-redux"
 import { w3cwebsocket as Socket } from "websocket"
 import Main from "./components/Main"
+import store from "./store"
 
 const App = () => {
   let client: Socket
 
   React.useEffect(() => {
     client = new Socket("ws://127.0.0.1:8000/api/set-socket")
-    // client = new Socket("ws://demos.kaazing.com/echo")
     client.onopen = () => {
       console.log("Opening socket")
     }
@@ -17,10 +18,10 @@ const App = () => {
   }, [])
 
   return (
-    <>
+    <Provider store={store}>
       <Main />
       <button onClick={() => client.send("Hello")}>Send messsage</button>
-    </>
+    </Provider>
   )
 }
 
