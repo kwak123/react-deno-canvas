@@ -10,7 +10,7 @@ describe("canvas integration", () => {
   describe("addLine", () => {
     it("should add line to lines", () => {
       const store = getMockStore()
-      const mockLine = "line"
+      const mockLine = new Path2D()
       store.dispatch(addLine(mockLine))
       expect(store.getState()).toEqual({
         lines: [mockLine],
@@ -18,8 +18,8 @@ describe("canvas integration", () => {
     })
 
     it("should add line to end of lines", () => {
-      const oldLine = "old line"
-      const newLine = "new line"
+      const oldLine = new Path2D()
+      const newLine = new Path2D()
       const state = { lines: [oldLine] }
       const store = getMockStore(state)
       store.dispatch(addLine(newLine))
@@ -31,7 +31,7 @@ describe("canvas integration", () => {
 
   describe("undoLine", () => {
     it("should undo existing line", () => {
-      const existingLine = "line"
+      const existingLine = new Path2D()
       const state = { lines: [existingLine] }
       const store = getMockStore(state)
       store.dispatch(undoLine())
@@ -41,8 +41,8 @@ describe("canvas integration", () => {
     })
 
     it("should undo only the line", () => {
-      const lineToKeep = "line to keep"
-      const lineToRemove = "line to remove"
+      const lineToKeep = new Path2D()
+      const lineToRemove = new Path2D()
       const state = { lines: [lineToKeep, lineToRemove] }
       const store = getMockStore(state)
       store.dispatch(undoLine())

@@ -2,7 +2,7 @@ import { Reducer, Action } from "@reduxjs/toolkit"
 import { CANVAS_ACTION, AddLineAction } from "./actions"
 
 export interface CanvasStore {
-  lines: string[]
+  lines: Path2D[]
 }
 
 export const initialState: CanvasStore = {

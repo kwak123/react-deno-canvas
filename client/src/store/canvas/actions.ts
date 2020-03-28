@@ -6,12 +6,12 @@ export enum CANVAS_ACTION {
 }
 
 export interface AddLineAction extends Action<CANVAS_ACTION> {
-  line: string
+  line: Path2D
 }
 
 export interface UndoLineAction extends Action<CANVAS_ACTION> {}
 
-export const addLine: ActionCreator<AddLineAction> = (line: string) => ({
+export const addLine: ActionCreator<AddLineAction> = (line: Path2D) => ({
   type: CANVAS_ACTION.ADD_LINE,
   line,
 })
