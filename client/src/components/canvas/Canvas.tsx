@@ -25,12 +25,18 @@ const Canvas = () => {
     ctx.closePath()
   }
 
-  const onMouseDown = (event: MouseEvent) => {
+  const handleStartDraw = ({
+    clientX,
+    clientY,
+  }: {
+    clientX: number
+    clientY: number
+  }) => {
     const { current: whiteboard } = whiteboardRef
     const ctx = whiteboard.getContext("2d")
     // Need to move x/y here
-    const newX = event.clientX - whiteboard.offsetLeft
-    const newY = event.clientY - whiteboard.offsetTop
+    const newX = clientX - whiteboard.offsetLeft
+    const newY = clientY - whiteboard.offsetTop
     setLast({ x: newX, y: newY })
     setCurr({ x: newX, y: newY })
     setShouldDraw(true)
@@ -43,6 +49,13 @@ const Canvas = () => {
       ctx.closePath()
       setIsDot(false)
     }
+  }
+
+  const onMouseDown = (event: MouseEvent) => {
+    handleStartDraw({
+      clientX: event.clientX,
+      clientY: event.clientY,
+    })
   }
 
   const onMouseUp = (event: MouseEvent) => {
@@ -60,13 +73,17 @@ const Canvas = () => {
     }
   }
 
-  const onTouchStart = () => {
+  const onTouchStart = (event: TouchEvent) => {
+    event.preventDefault()
     setShouldDraw(true)
   }
-  const onTouchEnd = () => {
+  const onTouchEnd = (event: TouchEvent) => {
+    event.preventDefault()
     setShouldDraw(false)
   }
-  const onTouchMove = () => {}
+  const onTouchMove = (event: TouchEvent) => {
+    event.preventDefault()
+  }
 
   React.useEffect(() => {
     const { current: whiteboard } = whiteboardRef
