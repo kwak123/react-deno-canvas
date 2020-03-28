@@ -1,10 +1,12 @@
 import * as React from "react"
+import Canvas from "./canvas/Canvas"
 
 class Main extends React.Component {
   render() {
     return (
       <div>
-        <h1> Welcome! </h1>
+        <h2>Canvas</h2>
+        <Canvas />
       </div>
     )
   }
