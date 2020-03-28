@@ -82,13 +82,15 @@ const tryToServeFile = async (fileName: string) => {
 };
 
 const connected = new Set<WebSocket>();
+const lines: string[] = [];
 
 const initClient = async (socket: WebSocket) => {
   connected.add(socket);
 
   for await (const event of socket.receive()) {
     if (typeof event === 'string') {
-      socket.send(event);
+      lines.push(event);
+      connected.forEach(socket => socket.send(JSON.stringify(lines)));
     }
   }
 };
