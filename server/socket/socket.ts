@@ -7,7 +7,7 @@ import {
   v4,
 } from '../deps.ts';
 
-const sockets: Map<string, WebSocket> = new Map();
+const sockets = new Set<WebSocket>();
 
 export const addSocket = async (request: ServerRequest) => {
   const { headers, conn } = request;
@@ -19,18 +19,16 @@ export const addSocket = async (request: ServerRequest) => {
     bufWriter: request.w,
   });
 
-  const socketId = v4.generate();
-  sockets.set(socketId, socket);
+  // const socketId = v4.generate();
+  sockets.add(socket);
 
   for await (const event of socket.receive()) {
     if (typeof event === 'string') {
       sockets.forEach(socket => socket.send(event));
+    } else if (isWebSocketCloseEvent(event)) {
+      sockets.delete(socket);
     }
   }
-};
-
-export const pingSocket = async (uuid: string) => {
-  await sockets.get(uuid)?.send('Hi');
 };
 
 export const pingAllSockets = async () => {

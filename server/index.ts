@@ -10,7 +10,7 @@ import {
   Response,
   exists,
 } from './deps.ts';
-import { addSocket, pingSocket } from './socket/socket.ts';
+import { addSocket } from './socket/socket.ts';
 import { walkSync } from 'https://deno.land/std@v0.37.1/fs/walk.ts';
 const port = Deno.args[0] || '8080';
 
