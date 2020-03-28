@@ -22,12 +22,18 @@ export class CanvasHelper {
   }
 
   closePath() {
+    if (!this.path) {
+      return null
+    }
+
     this.path.closePath()
     const finishedPath = this.path
     this.path = null
     return finishedPath
   }
 }
+
+const canvasHelper = new CanvasHelper()
 
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
@@ -37,7 +43,7 @@ const Canvas = () => {
   const [isMultiFinger, setIsMultiFinger] = useState(false)
   const [last, setLast] = useState<Position>({ x: 0, y: 0 })
   const [curr, setCurr] = useState<Position>({ x: 0, y: 0 })
-  const [allLines, setAllLines] = useState<Path2D[][]>([])
+  const [allPaths, setAllPaths] = useState<Path2D[]>([])
 
   const draw = (ctx: CanvasRenderingContext2D) => {
     const path = new Path2D()
@@ -45,12 +51,12 @@ const Canvas = () => {
     const { x: currX, y: currY } = curr
     path.moveTo(lastX, lastY)
     path.lineTo(currX, currY)
+    path.closePath()
     ctx.strokeStyle = "black"
     ctx.lineWidth = 2
-    path.closePath()
     ctx.stroke(path)
     currentLine.push(path)
-    return path
+    canvasHelper.appendPath(path)
   }
 
   const handleStartDraw = ({
@@ -60,6 +66,7 @@ const Canvas = () => {
     clientX: number
     clientY: number
   }) => {
+    canvasHelper.startPath()
     const { current: whiteboard } = whiteboardRef
     const ctx = whiteboard.getContext("2d")
     // Need to move x/y here
@@ -96,16 +103,22 @@ const Canvas = () => {
   }
 
   const handleStopDraw = () => {
-    if (currentLine.length) {
-      setAllLines([...allLines, currentLine])
-      currentLine = []
+    const finishedPath = canvasHelper.closePath()
+    if (finishedPath) {
+      setAllPaths([...allPaths, finishedPath])
     }
   }
 
   const undoDraw = () => {
-    const lines = [...allLines]
-    lines.pop()
-    setAllLines(lines)
+    const context = whiteboardRef.current.getContext("2d")
+    context.fillStyle = "white"
+    context.fillRect(0, 0, 600, 600)
+    const paths = allPaths
+    paths.pop()
+    paths.forEach((path) => {
+      whiteboardRef.current.getContext("2d").stroke(path)
+    })
+    setAllPaths(paths)
   }
 
   const onMouseDown = (event: MouseEvent) => {
