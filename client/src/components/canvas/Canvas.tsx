@@ -1,9 +1,14 @@
 import React, { useState, useRef, MouseEvent, TouchEvent } from "react"
+import styled from "styled-components"
 
 interface Position {
   x: number
   y: number
 }
+
+const HtmlCanvas = styled.canvas`
+  touch-action: none;
+`
 
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
@@ -114,7 +119,7 @@ const Canvas = () => {
   }, [curr])
 
   return (
-    <canvas
+    <HtmlCanvas
       ref={whiteboardRef}
       id="whiteboard"
       width="600"
@@ -129,7 +134,7 @@ const Canvas = () => {
       onTouchCancel={onTouchEnd}
     >
       {/* Need to add fallback */}
-    </canvas>
+    </HtmlCanvas>
   )
 }
 
