@@ -5,11 +5,11 @@ export enum CANVAS_ACTION {
   UNDO_LINE,
 }
 
-interface AddLineAction extends Action<CANVAS_ACTION> {
+export interface AddLineAction extends Action<CANVAS_ACTION> {
   line: string
 }
 
-interface UndoLineAction extends Action<CANVAS_ACTION> {}
+export interface UndoLineAction extends Action<CANVAS_ACTION> {}
 
 export const addLine: ActionCreator<AddLineAction> = (line: string) => ({
   type: CANVAS_ACTION.ADD_LINE,

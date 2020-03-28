@@ -30,7 +30,9 @@ const Canvas = () => {
       onMouseUp={onMouseUp}
       onMouseMove={onMouseMove}
       onMouseOut={onMouseUp}
-    ></canvas>
+    >
+      {/* Need to add fallback */}
+    </canvas>
   )
 }
 
