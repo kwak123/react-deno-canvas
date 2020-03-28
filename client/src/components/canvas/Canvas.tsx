@@ -2,8 +2,8 @@ import React, { useState, useRef, MouseEvent, TouchEvent } from "react"
 import styled from "styled-components"
 import { useSelector, useDispatch } from "react-redux"
 
+import { CanvasHelper } from "./canvasHelper"
 import { addStroke, undoStroke } from "../../store/canvas/actions"
-import { CanvasStroke, CanvasCoordinate } from "../../store/canvas/reducers"
 import { selectStrokes } from "../../store/canvas/selectors"
 
 interface Position {
@@ -12,30 +12,6 @@ interface Position {
 }
 
 const HtmlCanvas = styled.canvas``
-
-export class CanvasHelper {
-  stroke: CanvasStroke
-
-  start() {
-    this.stroke = []
-  }
-
-  append(canvasCoordinate: CanvasCoordinate) {
-    if (this.stroke) {
-      this.stroke.push(canvasCoordinate)
-    }
-  }
-
-  close() {
-    if (!this.stroke || !this.stroke.length) {
-      return null
-    }
-
-    const finishedStroke = this.stroke
-    this.stroke = null
-    return finishedStroke
-  }
-}
 
 const canvasHelper = new CanvasHelper()
 
@@ -120,7 +96,6 @@ const Canvas = () => {
 
     if (finishedStroke) {
       dispatch(addStroke(finishedStroke))
-      // setStrokes([...strokes, finishedStroke])
       refreshCanvas()
     }
   }
@@ -128,9 +103,6 @@ const Canvas = () => {
   const undoDraw = () => {
     clearCanvas()
     dispatch(undoStroke())
-    // const newStrokes = [...strokes]
-    // newStrokes.pop()
-    // setStrokes(newStrokes)
     refreshCanvas()
   }
 
