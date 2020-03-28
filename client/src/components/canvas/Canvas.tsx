@@ -6,15 +6,14 @@ interface Position {
   y: number
 }
 
-const HtmlCanvas = styled.canvas`
-  touch-action: none;
-`
+const HtmlCanvas = styled.canvas``
 
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
   const whiteboardRef = useRef<HTMLCanvasElement>(null)
   const [shouldDraw, setShouldDraw] = useState(false)
   const [isDot, setIsDot] = useState(false)
+  const [isMultiFinger, setIsMultiFinger] = useState(false)
   const [last, setLast] = useState<Position>({ x: 0, y: 0 })
   const [curr, setCurr] = useState<Position>({ x: 0, y: 0 })
 
@@ -83,7 +82,7 @@ const Canvas = () => {
   }
 
   const onMouseMove = (event: MouseEvent) => {
-    if (shouldDraw) {
+    if (shouldDraw && !isMultiFinger) {
       handleMoveDraw({
         clientX: event.clientX,
         clientY: event.clientY,
@@ -92,25 +91,28 @@ const Canvas = () => {
   }
 
   const onTouchStart = (event: TouchEvent) => {
-    event.preventDefault()
-    event.stopPropagation()
-    setShouldDraw(true)
-    handleStartDraw({
-      clientX: event.touches[0].clientX,
-      clientY: event.touches[0].clientY,
-    })
+    if (event.touches.length > 1) {
+      setIsMultiFinger(true)
+      setShouldDraw(false)
+    } else {
+      setShouldDraw(true)
+      handleStartDraw({
+        clientX: event.touches[0].clientX,
+        clientY: event.touches[0].clientY,
+      })
+    }
   }
   const onTouchEnd = (event: TouchEvent) => {
-    event.preventDefault()
+    setIsMultiFinger(false)
     setShouldDraw(false)
   }
   const onTouchMove = (event: TouchEvent) => {
-    event.preventDefault()
-    event.stopPropagation()
-    handleMoveDraw({
-      clientX: event.touches[0].clientX,
-      clientY: event.touches[0].clientY,
-    })
+    if (shouldDraw && !isMultiFinger) {
+      handleMoveDraw({
+        clientX: event.touches[0].clientX,
+        clientY: event.touches[0].clientY,
+      })
+    }
   }
 
   React.useEffect(() => {
@@ -121,6 +123,7 @@ const Canvas = () => {
   return (
     <HtmlCanvas
       ref={whiteboardRef}
+      style={{ touchAction: isMultiFinger ? "auto" : "pinch-zoom" }}
       id="whiteboard"
       width="600"
       height="600"
