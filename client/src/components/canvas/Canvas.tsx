@@ -10,6 +10,25 @@ const HtmlCanvas = styled.canvas``
 
 let currentLine: Path2D[] = []
 
+export class CanvasHelper {
+  path: Path2D
+
+  startPath() {
+    this.path = new Path2D()
+  }
+
+  appendPath(newPath: Path2D) {
+    this.path.addPath(newPath)
+  }
+
+  closePath() {
+    this.path.closePath()
+    const finishedPath = this.path
+    this.path = null
+    return finishedPath
+  }
+}
+
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
   const whiteboardRef = useRef<HTMLCanvasElement>(null)
