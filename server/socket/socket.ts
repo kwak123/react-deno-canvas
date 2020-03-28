@@ -26,10 +26,17 @@ export const addSocket = async (request: ServerRequest) => {
 
   for await (const event of socket.receive()) {
     if (typeof event === 'string') {
-      console.log('Event!');
       const line = JSON.parse(event);
-      lines.push(line);
-      updateSockets();
+      if (line.delete) {
+        const deleteIndex = lines.findIndex(l => l.id === line.id);
+        if (deleteIndex > 0) {
+          lines.splice(deleteIndex, 1);
+        }
+        updateSockets();
+      } else {
+        lines.push(line);
+        updateSockets();
+      }
     } else if (isWebSocketCloseEvent(event)) {
       sockets.delete(socket);
     }

@@ -23,7 +23,7 @@ const canvasHelper = new CanvasHelper()
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
   const width = 1200
-  const height = 1200
+  const height = 600
   const dispatch = useDispatch()
   const strokes = useSelector(selectStrokes)
   const whiteboardRef = useRef<HTMLCanvasElement>(null)
