@@ -48,12 +48,7 @@ const Canvas = () => {
     ctx.strokeStyle = "black"
     ctx.lineWidth = 2
     ctx.stroke(path)
-    canvasHelper.append({
-      lastX,
-      lastY,
-      currX,
-      currY,
-    })
+    canvasHelper.append([lastX, lastY, currX, currY])
   }
 
   const handleStartDraw = ({
@@ -124,7 +119,7 @@ const Canvas = () => {
     const { current: whiteboard } = whiteboardRef
     const context = whiteboard.getContext("2d")
     strokes.forEach((stroke) => {
-      stroke.forEach(({ lastX, lastY, currX, currY }) => {
+      stroke.forEach(([lastX, lastY, currX, currY]) => {
         draw(context, { x: lastX, y: lastY }, { x: currX, y: currY })
       })
     })
