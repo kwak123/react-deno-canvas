@@ -103,7 +103,7 @@ const Canvas = () => {
   const undoDraw = () => {
     clearCanvas()
     dispatch(undoStroke())
-    refreshCanvas()
+    // refreshCanvas()
   }
 
   const clearCanvas = () => {
@@ -167,6 +167,10 @@ const Canvas = () => {
       })
     }
   }
+
+  React.useEffect(() => {
+    refreshCanvas()
+  }, [strokes])
 
   return (
     <>
