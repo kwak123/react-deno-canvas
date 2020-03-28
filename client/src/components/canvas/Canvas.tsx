@@ -172,6 +172,7 @@ const Canvas = () => {
     refreshCanvas()
   }, [strokes])
 
+  // Ref can likely fix a lot of the bloat in here
   return (
     <>
       <button onClick={undoDraw}>Undo</button>
