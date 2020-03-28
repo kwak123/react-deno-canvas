@@ -47,8 +47,10 @@ export const updateSockets = () => {
   const linesString = JSON.stringify(lines);
   sockets.forEach(socket => {
     if (!socket.isClosed) {
+      console.log('Updating socket');
       socket.send(linesString);
     } else {
+      console.log('Socket is closed');
       sockets.delete(socket);
     }
   });

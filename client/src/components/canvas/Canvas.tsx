@@ -103,9 +103,8 @@ const Canvas = () => {
   }
 
   const undoDraw = () => {
-    clearCanvas()
     dispatch(undoStrokeFromService())
-    // refreshCanvas()
+    refreshCanvas()
   }
 
   const clearCanvas = () => {
@@ -115,6 +114,7 @@ const Canvas = () => {
   }
 
   const refreshCanvas = () => {
+    clearCanvas()
     const { current: whiteboard } = whiteboardRef
     const context = whiteboard.getContext("2d")
     strokes.forEach((stroke) => {
@@ -173,6 +173,7 @@ const Canvas = () => {
   }
 
   React.useEffect(() => {
+    console.log("Detected selector change")
     refreshCanvas()
   }, [strokes])
 

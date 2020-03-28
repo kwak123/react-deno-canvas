@@ -44,11 +44,13 @@ const canvasReducer: Reducer<CanvasStore, Action> = (
         userStrokes: newUserStrokes,
       }
     }
-    case CANVAS_ACTION.SET_STROKES:
+    case CANVAS_ACTION.SET_STROKES: {
+      console.log("Canvas set")
       return {
         ...state,
         strokes: (action as SetStrokesAction).strokes,
       }
+    }
     default:
       return state
   }

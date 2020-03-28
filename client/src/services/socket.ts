@@ -17,6 +17,7 @@ export class SocketHelper {
 
       socket.onmessage = (message) => {
         // console.log("message", message)
+        console.log("Received message")
         const strokes: CanvasStroke[] = JSON.parse(message.data as string)
         store.dispatch(setStrokes(strokes))
       }
