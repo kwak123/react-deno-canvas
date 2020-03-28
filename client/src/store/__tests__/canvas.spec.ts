@@ -1,13 +1,33 @@
-import { createStore, combineReducers, PreloadedState } from "@reduxjs/toolkit"
-import canvasReducer, {
-  initialState,
-  CanvasStore,
-  CanvasStroke,
-} from "../canvas/reducers"
-import { addStroke, undoStroke } from "../canvas/actions"
+import {
+  createStore,
+  applyMiddleware,
+  PreloadedState,
+  combineReducers,
+} from "@reduxjs/toolkit"
+import thunk from "redux-thunk"
+import canvasReducer, { CanvasStroke } from "../canvas/reducers"
+import { sendStrokeToService, undoStrokeFromService } from "../canvas/actions"
 
-const getMockStore = (state = initialState) => {
-  return createStore(canvasReducer, state as PreloadedState<CanvasStore>)
+import { AppService } from "../../services"
+import { GlobalState } from "../"
+
+const getMockService: () => AppService = () => ({
+  socketService: {
+    initializeSocket: jest.fn(),
+    sendMessage: jest.fn(),
+    getSocket: jest.fn(),
+  },
+})
+
+const getMockStore = (state = {}) => {
+  const mockService = getMockService()
+  return createStore(
+    combineReducers({
+      canvas: canvasReducer,
+    }),
+    state as PreloadedState<GlobalState>,
+    applyMiddleware(thunk.withExtraArgument(mockService))
+  )
 }
 
 describe("canvas integration", () => {
@@ -15,20 +35,31 @@ describe("canvas integration", () => {
     it("should add line to strokes", () => {
       const store = getMockStore()
       const mockStroke: CanvasStroke = { id: "1", data: [[0, 0, 0, 0]] }
-      store.dispatch(addStroke(mockStroke))
+      store.dispatch(sendStrokeToService(mockStroke))
       expect(store.getState()).toEqual({
-        strokes: [mockStroke],
+        canvas: {
+          strokes: [mockStroke],
+          userStrokes: [mockStroke.id],
+        },
       })
     })
 
     it("should add line to end of lines", () => {
       const oldPath: CanvasStroke = { id: "1", data: [[0, 0, 0, 0]] }
       const newPath: CanvasStroke = { id: "2", data: [[1, 1, 1, 1]] }
-      const state = { strokes: [oldPath] }
+      const state: GlobalState = {
+        canvas: {
+          strokes: [oldPath],
+          userStrokes: [oldPath.id],
+        },
+      }
       const store = getMockStore(state)
-      store.dispatch(addStroke(newPath))
+      store.dispatch(sendStrokeToService(newPath))
       expect(store.getState()).toEqual({
-        strokes: [oldPath, newPath],
+        canvas: {
+          strokes: [oldPath, newPath],
+          userStrokes: [oldPath.id, newPath.id],
+        },
       })
     })
   })
@@ -36,22 +67,38 @@ describe("canvas integration", () => {
   describe("undoPath", () => {
     it("should undo existing line", () => {
       const oldStroke: CanvasStroke = { id: "1", data: [[0, 0, 0, 0]] }
-      const state = { strokes: [oldStroke] }
+      const state: GlobalState = {
+        canvas: {
+          strokes: [],
+          userStrokes: [oldStroke.id],
+        },
+      }
       const store = getMockStore(state)
-      store.dispatch(undoStroke())
+      store.dispatch(undoStrokeFromService())
       expect(store.getState()).toEqual({
-        strokes: [],
+        canvas: {
+          strokes: [],
+          userStrokes: [],
+        },
       })
     })
 
     it("should undo only the line", () => {
       const strokeToKeep: CanvasStroke = { id: "1", data: [[0, 0, 0, 0]] }
       const strokeToRemove: CanvasStroke = { id: "2", data: [[1, 1, 1, 1]] }
-      const state = { strokes: [strokeToKeep, strokeToRemove] }
+      const state: GlobalState = {
+        canvas: {
+          strokes: [],
+          userStrokes: [strokeToKeep.id, strokeToRemove.id],
+        },
+      }
       const store = getMockStore(state)
-      store.dispatch(undoStroke())
+      store.dispatch(undoStrokeFromService())
       expect(store.getState()).toEqual({
-        strokes: [strokeToKeep],
+        canvas: {
+          strokes: [],
+          userStrokes: [strokeToKeep.id],
+        },
       })
     })
   })

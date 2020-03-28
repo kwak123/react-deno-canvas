@@ -13,10 +13,12 @@ export interface CanvasStroke {
 
 export interface CanvasStore {
   strokes: CanvasStroke[]
+  userStrokes: string[]
 }
 
 export const initialState: CanvasStore = {
   strokes: [],
+  userStrokes: [],
 }
 
 const canvasReducer: Reducer<CanvasStore, Action> = (
@@ -24,19 +26,27 @@ const canvasReducer: Reducer<CanvasStore, Action> = (
   action: Action
 ) => {
   switch (action.type) {
-    case CANVAS_ACTION.ADD_LINE:
+    case CANVAS_ACTION.ADD_STROKE:
       return {
+        ...state,
         strokes: [...state.strokes, (action as AddLineAction).stroke],
+        userStrokes: [
+          ...state.userStrokes,
+          (action as AddLineAction).stroke.id,
+        ],
       }
-    case CANVAS_ACTION.UNDO_LINE: {
-      const newStrokes = [...state.strokes]
-      newStrokes.pop()
+    case CANVAS_ACTION.UNDO_STROKE: {
+      const newUserStrokes = state.userStrokes.slice()
+      // Highly naive
+      newUserStrokes.pop()
       return {
-        strokes: newStrokes,
+        ...state,
+        userStrokes: newUserStrokes,
       }
     }
     case CANVAS_ACTION.SET_STROKES:
       return {
+        ...state,
         strokes: (action as SetStrokesAction).strokes,
       }
     default:

@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import { CanvasHelper } from "./canvasHelper"
 import {
-  addStroke,
-  undoStroke,
+  undoStrokeFromService,
   sendStrokeToService,
 } from "../../store/canvas/actions"
 import { selectStrokes } from "../../store/canvas/selectors"
@@ -105,7 +104,7 @@ const Canvas = () => {
 
   const undoDraw = () => {
     clearCanvas()
-    dispatch(undoStroke())
+    dispatch(undoStrokeFromService())
     // refreshCanvas()
   }
 
