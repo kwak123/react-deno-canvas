@@ -11,11 +11,11 @@ export interface AddLineAction extends Action<CANVAS_ACTION> {
 
 export interface UndoLineAction extends Action<CANVAS_ACTION> {}
 
-export const addPaths: ActionCreator<AddLineAction> = (path: Path2D) => ({
+export const addPath: ActionCreator<AddLineAction> = (path: Path2D) => ({
   type: CANVAS_ACTION.ADD_LINE,
   path,
 })
 
-export const undoPaths: ActionCreator<UndoLineAction> = () => ({
+export const undoPath: ActionCreator<UndoLineAction> = () => ({
   type: CANVAS_ACTION.UNDO_LINE,
 })

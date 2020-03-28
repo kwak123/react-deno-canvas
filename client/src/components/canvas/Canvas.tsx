@@ -1,6 +1,8 @@
 import React, { useState, useRef, MouseEvent, TouchEvent } from "react"
 import styled from "styled-components"
+import { useSelector, useDispatch } from "react-redux"
 
+import { addPath, undoPath } from "../../store/canvas/actions"
 import { selectPaths } from "../../store/canvas/selectors"
 
 interface Position {
@@ -8,28 +10,36 @@ interface Position {
   y: number
 }
 
+interface CanvasStroke {
+  lastX: number
+  lastY: number
+  currX: number
+  currY: number
+}
+
 const HtmlCanvas = styled.canvas``
 
 export class CanvasHelper {
-  path: Path2D
+  strokes: CanvasStroke[]
 
-  startPath() {
-    this.path = new Path2D()
+  start() {
+    this.strokes = []
   }
 
-  appendPath(newPath: Path2D) {
-    this.path.addPath(newPath)
+  append(canvasStroke: CanvasStroke) {
+    if (this.strokes) {
+      this.strokes.push(canvasStroke)
+    }
   }
 
-  closePath() {
-    if (!this.path) {
+  close() {
+    if (!this.strokes || !this.strokes.length) {
       return null
     }
 
-    this.path.closePath()
-    const finishedPath = this.path
-    this.path = null
-    return finishedPath
+    const finishedStrokes = this.strokes
+    this.strokes = null
+    return finishedStrokes
   }
 }
 
@@ -37,25 +47,37 @@ const canvasHelper = new CanvasHelper()
 
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
+  // const dispatch = useDispatch()
+  // const paths = useSelector(selectPaths)
   const whiteboardRef = useRef<HTMLCanvasElement>(null)
   const [shouldDraw, setShouldDraw] = useState(false)
   const [isDot, setIsDot] = useState(false)
   const [isMultiFinger, setIsMultiFinger] = useState(false)
   const [last, setLast] = useState<Position>({ x: 0, y: 0 })
   const [curr, setCurr] = useState<Position>({ x: 0, y: 0 })
-  const [allPaths, setAllPaths] = useState<Path2D[]>([])
 
-  const draw = (ctx: CanvasRenderingContext2D) => {
+  const [strokes, setStrokes] = useState<CanvasStroke[][]>([])
+
+  const draw = (
+    ctx: CanvasRenderingContext2D,
+    lastPos: Position,
+    currPos: Position
+  ) => {
     const path = new Path2D()
-    const { x: lastX, y: lastY } = last
-    const { x: currX, y: currY } = curr
+    const { x: lastX, y: lastY } = lastPos
+    const { x: currX, y: currY } = currPos
     path.moveTo(lastX, lastY)
     path.lineTo(currX, currY)
     path.closePath()
     ctx.strokeStyle = "black"
     ctx.lineWidth = 2
     ctx.stroke(path)
-    canvasHelper.appendPath(path)
+    canvasHelper.append({
+      lastX,
+      lastY,
+      currX,
+      currY,
+    })
   }
 
   const handleStartDraw = ({
@@ -65,7 +87,7 @@ const Canvas = () => {
     clientX: number
     clientY: number
   }) => {
-    canvasHelper.startPath()
+    canvasHelper.start()
     const { current: whiteboard } = whiteboardRef
     const ctx = whiteboard.getContext("2d")
     // Need to move x/y here
@@ -98,22 +120,25 @@ const Canvas = () => {
     const newY = clientY - whiteboard.offsetTop
     setLast({ x: currX, y: currY })
     setCurr({ x: newX, y: newY })
-    draw(whiteboard.getContext("2d"))
+    draw(whiteboard.getContext("2d"), last, curr)
   }
 
   const handleStopDraw = () => {
-    const finishedPath = canvasHelper.closePath()
-    if (finishedPath) {
-      setAllPaths([...allPaths, finishedPath])
+    const finishedStroke = canvasHelper.close()
+
+    if (finishedStroke) {
+      // dispatch(addPath(finishedPath))
+      setStrokes([...strokes, finishedStroke])
       refreshCanvas()
     }
   }
 
   const undoDraw = () => {
     clearCanvas()
-    const paths = allPaths
-    paths.pop()
-    setAllPaths(paths)
+    // dispatch(undoPath())
+    const newStrokes = [...strokes]
+    newStrokes.pop()
+    setStrokes(newStrokes)
     refreshCanvas()
   }
 
@@ -124,8 +149,15 @@ const Canvas = () => {
   }
 
   const refreshCanvas = () => {
-    allPaths.forEach((path) => {
-      whiteboardRef.current.getContext("2d").stroke(path)
+    const { current: whiteboard } = whiteboardRef
+    const context = whiteboard.getContext("2d")
+    // paths.forEach((path) => {
+    //   whiteboardRef.current.getContext("2d").stroke(path)
+    // })
+    strokes.forEach((stroke) => {
+      stroke.forEach(({ lastX, lastY, currX, currY }) => {
+        draw(context, { x: lastX, y: lastY }, { x: currX, y: currY })
+      })
     })
   }
 

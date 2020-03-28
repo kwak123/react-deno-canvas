@@ -1,17 +1,17 @@
 import { createStore, combineReducers, PreloadedState } from "@reduxjs/toolkit"
 import canvasReducer, { initialState, CanvasStore } from "../canvas/reducers"
-import { addPaths, undoPaths } from "../canvas/actions"
+import { addPath, undoPath } from "../canvas/actions"
 
 const getMockStore = (state = initialState) => {
   return createStore(canvasReducer, state as PreloadedState<CanvasStore>)
 }
 
 describe("canvas integration", () => {
-  describe("addPaths", () => {
+  describe("addPath", () => {
     it("should add line to paths", () => {
       const store = getMockStore()
       const mockPath = new Path2D()
-      store.dispatch(addPaths(mockPath))
+      store.dispatch(addPath(mockPath))
       expect(store.getState()).toEqual({
         paths: [mockPath],
       })
@@ -22,19 +22,19 @@ describe("canvas integration", () => {
       const newPath = new Path2D()
       const state = { paths: [oldPath] }
       const store = getMockStore(state)
-      store.dispatch(addPaths(newPath))
+      store.dispatch(addPath(newPath))
       expect(store.getState()).toEqual({
         paths: [oldPath, newPath],
       })
     })
   })
 
-  describe("undoPaths", () => {
+  describe("undoPath", () => {
     it("should undo existing line", () => {
       const oldPath = new Path2D()
       const state = { paths: [oldPath] }
       const store = getMockStore(state)
-      store.dispatch(undoPaths())
+      store.dispatch(undoPath())
       expect(store.getState()).toEqual({
         paths: [],
       })
@@ -45,7 +45,7 @@ describe("canvas integration", () => {
       const pathToRemove = new Path2D()
       const state = { paths: [pathToKeep, pathToRemove] }
       const store = getMockStore(state)
-      store.dispatch(undoPaths())
+      store.dispatch(undoPath())
       expect(store.getState()).toEqual({
         paths: [pathToKeep],
       })
