@@ -1,10 +1,4 @@
-import {
-  Action,
-  ActionCreator,
-  ThunkAction,
-  Dispatch,
-  AnyAction,
-} from "@reduxjs/toolkit"
+import { Action, ActionCreator } from "@reduxjs/toolkit"
 import { CanvasStroke } from "./reducers"
 import { ServiceThunkResult } from "../index"
 

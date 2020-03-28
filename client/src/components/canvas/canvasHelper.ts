@@ -1,4 +1,7 @@
-import { CanvasStroke, CanvasCoordinate } from "../../store/canvas/reducers"
+import {
+  CanvasStroke,
+  CanvasCoordinateTuple,
+} from "../../store/canvas/reducers"
 
 export class CanvasHelper {
   stroke: CanvasStroke
@@ -7,7 +10,7 @@ export class CanvasHelper {
     this.stroke = []
   }
 
-  append(canvasCoordinate: CanvasCoordinate) {
+  append(canvasCoordinate: CanvasCoordinateTuple) {
     if (canvasCoordinate && this.stroke) {
       this.stroke.push(canvasCoordinate)
     }

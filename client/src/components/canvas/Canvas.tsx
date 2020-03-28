@@ -15,12 +15,16 @@ interface Position {
   y: number
 }
 
-const HtmlCanvas = styled.canvas``
+const HtmlCanvas = styled.canvas`
+  border: 1px solid black;
+`
 
 const canvasHelper = new CanvasHelper()
 
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
+  const width = 1200
+  const height = 1200
   const dispatch = useDispatch()
   const strokes = useSelector(selectStrokes)
   const whiteboardRef = useRef<HTMLCanvasElement>(null)
@@ -113,7 +117,7 @@ const Canvas = () => {
   const clearCanvas = () => {
     const context = whiteboardRef.current.getContext("2d")
     context.fillStyle = "white"
-    context.fillRect(0, 0, 600, 600)
+    context.fillRect(0, 0, 1200, 1200)
   }
 
   const refreshCanvas = () => {
@@ -186,8 +190,8 @@ const Canvas = () => {
         ref={whiteboardRef}
         style={{ touchAction: isMultiFinger ? "auto" : "pinch-zoom" }}
         id="whiteboard"
-        width="600"
-        height="600"
+        width={width}
+        height={height}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}
