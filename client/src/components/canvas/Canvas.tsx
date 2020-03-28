@@ -51,6 +51,21 @@ const Canvas = () => {
     }
   }
 
+  const handleDrawMove = ({
+    clientX,
+    clientY,
+  }: {
+    clientX: number
+    clientY: number
+  }) => {
+    const { current: whiteboard } = whiteboardRef
+    const { x: currX, y: currY } = curr
+    const newX = clientX - whiteboard.offsetLeft
+    const newY = clientY - whiteboard.offsetTop
+    setLast({ x: currX, y: currY })
+    setCurr({ x: newX, y: newY })
+  }
+
   const onMouseDown = (event: MouseEvent) => {
     handleStartDraw({
       clientX: event.clientX,
@@ -63,13 +78,11 @@ const Canvas = () => {
   }
 
   const onMouseMove = (event: MouseEvent) => {
-    const { current: whiteboard } = whiteboardRef
     if (shouldDraw) {
-      const { x: currX, y: currY } = curr
-      const newX = event.clientX - whiteboard.offsetLeft
-      const newY = event.clientY - whiteboard.offsetTop
-      setLast({ x: currX, y: currY })
-      setCurr({ x: newX, y: newY })
+      handleDrawMove({
+        clientX: event.clientX,
+        clientY: event.clientY,
+      })
     }
   }
 
