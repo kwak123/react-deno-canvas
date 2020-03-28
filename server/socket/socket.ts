@@ -29,9 +29,6 @@ export const addSocket = async (request: ServerRequest) => {
       console.log('Event!');
       const line = JSON.parse(event);
       lines.push(line);
-      // sockets.forEach(socket => socket.send(JSON.stringify(lines)));
-      // sockets.forEach(socket => socket.send(event));
-      // pingAllSockets();
       updateSockets();
     } else if (isWebSocketCloseEvent(event)) {
       sockets.delete(socket);
@@ -39,16 +36,12 @@ export const addSocket = async (request: ServerRequest) => {
   }
 };
 
-export const pingAllSockets = () => {
-  sockets.forEach(socket => {
-    socket.send('Ping!');
-  });
-};
-
 export const updateSockets = () => {
   const linesString = JSON.stringify(lines);
   sockets.forEach(socket => {
-    socket.send(linesString);
+    if (!socket.isClosed) {
+      socket.send(linesString);
+    }
   });
 };
 
