@@ -18,15 +18,15 @@ const Canvas = () => {
   const [curr, setCurr] = useState<Position>({ x: 0, y: 0 })
 
   const draw = (ctx: CanvasRenderingContext2D) => {
-    ctx.beginPath()
+    const path = new Path2D()
     const { x: lastX, y: lastY } = last
     const { x: currX, y: currY } = curr
-    ctx.moveTo(lastX, lastY)
-    ctx.lineTo(currX, currY)
+    path.moveTo(lastX, lastY)
+    path.lineTo(currX, currY)
     ctx.strokeStyle = "black"
     ctx.lineWidth = 2
-    ctx.stroke()
-    ctx.closePath()
+    path.closePath()
+    ctx.stroke(path)
   }
 
   const handleStartDraw = ({
