@@ -1,4 +1,7 @@
-export { serve } from 'https://deno.land/std@v0.37.1/http/server.ts';
+export {
+  serve,
+  ServerRequest,
+} from 'https://deno.land/std@v0.37.1/http/server.ts';
 export {
   acceptWebSocket,
   isWebSocketCloseEvent,
@@ -6,4 +9,11 @@ export {
   WebSocket,
 } from 'https://deno.land/std@v0.37.1/ws/mod.ts';
 
-export { Application } from 'https://deno.land/x/oak/mod.ts';
+export {
+  Application,
+  send,
+  Router,
+  Request,
+} from 'https://deno.land/x/oak/mod.ts';
+
+export { v4 } from 'https://deno.land/std@v0.37.1/uuid/mod.ts';

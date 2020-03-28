@@ -9,7 +9,7 @@ After adding deps:
 `deno fetch deps.ts --lock=lock.json --reload --lock-write`
 
 Starting server:
-`deno --allow-net server/index.ts`
+`deno --allow-net --allow-read server/index.ts`
 
 You will likely need to change the `http://` and `https://` module resolution directories in `tsconfig.json`
 
