@@ -4,7 +4,12 @@ import { CANVAS_ACTION, AddLineAction, SetStrokesAction } from "./actions"
 // lastX, lastY, currX, currY
 export type CanvasCoordinateTuple = [number, number, number, number]
 
-export type CanvasStroke = CanvasCoordinateTuple[]
+// export type CanvasStroke = CanvasCoordinateTuple[]
+
+export interface CanvasStroke {
+  id: string
+  data: CanvasCoordinateTuple[]
+}
 
 export interface CanvasStore {
   strokes: CanvasStroke[]

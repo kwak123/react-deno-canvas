@@ -119,7 +119,7 @@ const Canvas = () => {
     const { current: whiteboard } = whiteboardRef
     const context = whiteboard.getContext("2d")
     strokes.forEach((stroke) => {
-      stroke.forEach(([lastX, lastY, currX, currY]) => {
+      stroke.data.forEach(([lastX, lastY, currX, currY]) => {
         draw(context, { x: lastX, y: lastY }, { x: currX, y: currY })
       })
     })

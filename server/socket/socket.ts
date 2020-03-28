@@ -41,6 +41,8 @@ export const updateSockets = () => {
   sockets.forEach(socket => {
     if (!socket.isClosed) {
       socket.send(linesString);
+    } else {
+      sockets.delete(socket);
     }
   });
 };

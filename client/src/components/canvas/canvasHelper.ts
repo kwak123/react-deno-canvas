@@ -1,3 +1,4 @@
+import * as uuid from "uuid"
 import {
   CanvasStroke,
   CanvasCoordinateTuple,
@@ -7,17 +8,20 @@ export class CanvasHelper {
   stroke: CanvasStroke
 
   start() {
-    this.stroke = []
+    this.stroke = {
+      id: uuid.v4(),
+      data: [],
+    }
   }
 
   append(canvasCoordinate: CanvasCoordinateTuple) {
     if (canvasCoordinate && this.stroke) {
-      this.stroke.push(canvasCoordinate)
+      this.stroke.data.push(canvasCoordinate)
     }
   }
 
   close() {
-    if (!this.stroke || !this.stroke.length) {
+    if (!this.stroke || !this.stroke.data.length) {
       return null
     }
 
