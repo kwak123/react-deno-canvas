@@ -60,6 +60,14 @@ const Canvas = () => {
     }
   }
 
+  const onTouchStart = () => {
+    setShouldDraw(true)
+  }
+  const onTouchEnd = () => {
+    setShouldDraw(false)
+  }
+  const onTouchMove = () => {}
+
   React.useEffect(() => {
     const { current: whiteboard } = whiteboardRef
     draw(whiteboard.getContext("2d"))
