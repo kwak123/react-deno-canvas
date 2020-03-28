@@ -1,4 +1,4 @@
-import React, { useState, useRef, MouseEvent } from "react"
+import React, { useState, useRef, MouseEvent, TouchEvent } from "react"
 
 interface Position {
   x: number
@@ -51,7 +51,7 @@ const Canvas = () => {
     }
   }
 
-  const handleDrawMove = ({
+  const handleMoveDraw = ({
     clientX,
     clientY,
   }: {
@@ -79,7 +79,7 @@ const Canvas = () => {
 
   const onMouseMove = (event: MouseEvent) => {
     if (shouldDraw) {
-      handleDrawMove({
+      handleMoveDraw({
         clientX: event.clientX,
         clientY: event.clientY,
       })
@@ -88,7 +88,12 @@ const Canvas = () => {
 
   const onTouchStart = (event: TouchEvent) => {
     event.preventDefault()
+    event.stopPropagation()
     setShouldDraw(true)
+    handleStartDraw({
+      clientX: event.touches[0].clientX,
+      clientY: event.touches[0].clientY,
+    })
   }
   const onTouchEnd = (event: TouchEvent) => {
     event.preventDefault()
@@ -96,6 +101,11 @@ const Canvas = () => {
   }
   const onTouchMove = (event: TouchEvent) => {
     event.preventDefault()
+    event.stopPropagation()
+    handleMoveDraw({
+      clientX: event.touches[0].clientX,
+      clientY: event.touches[0].clientY,
+    })
   }
 
   React.useEffect(() => {
@@ -113,6 +123,10 @@ const Canvas = () => {
       onMouseUp={onMouseUp}
       onMouseMove={onMouseMove}
       onMouseOut={onMouseUp}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onTouchMove={onTouchMove}
+      onTouchCancel={onTouchEnd}
     >
       {/* Need to add fallback */}
     </canvas>
