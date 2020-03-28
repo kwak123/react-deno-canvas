@@ -106,19 +106,28 @@ const Canvas = () => {
     const finishedPath = canvasHelper.closePath()
     if (finishedPath) {
       setAllPaths([...allPaths, finishedPath])
+      refreshCanvas()
     }
   }
 
   const undoDraw = () => {
+    clearCanvas()
+    const paths = allPaths
+    paths.pop()
+    setAllPaths(paths)
+    refreshCanvas()
+  }
+
+  const clearCanvas = () => {
     const context = whiteboardRef.current.getContext("2d")
     context.fillStyle = "white"
     context.fillRect(0, 0, 600, 600)
-    const paths = allPaths
-    paths.pop()
-    paths.forEach((path) => {
+  }
+
+  const refreshCanvas = () => {
+    allPaths.forEach((path) => {
       whiteboardRef.current.getContext("2d").stroke(path)
     })
-    setAllPaths(paths)
   }
 
   const onMouseDown = (event: MouseEvent) => {
