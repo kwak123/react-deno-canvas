@@ -3,7 +3,11 @@ import styled from "styled-components"
 import { useSelector, useDispatch } from "react-redux"
 
 import { CanvasHelper } from "./canvasHelper"
-import { addStroke, undoStroke } from "../../store/canvas/actions"
+import {
+  addStroke,
+  undoStroke,
+  sendStrokeToService,
+} from "../../store/canvas/actions"
 import { selectStrokes } from "../../store/canvas/selectors"
 
 interface Position {
@@ -95,7 +99,7 @@ const Canvas = () => {
     const finishedStroke = canvasHelper.close()
 
     if (finishedStroke) {
-      dispatch(addStroke(finishedStroke))
+      dispatch(sendStrokeToService(finishedStroke))
       refreshCanvas()
     }
   }

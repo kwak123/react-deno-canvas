@@ -7,6 +7,7 @@ import {
   v4,
 } from '../deps.ts';
 
+const lines: any[] = [];
 const sockets = new Set<WebSocket>();
 
 export const addSocket = async (request: ServerRequest) => {
@@ -21,18 +22,36 @@ export const addSocket = async (request: ServerRequest) => {
 
   // const socketId = v4.generate();
   sockets.add(socket);
+  socket.send(JSON.stringify(lines));
 
   for await (const event of socket.receive()) {
     if (typeof event === 'string') {
-      sockets.forEach(socket => socket.send(event));
+      console.log('Event!');
+      const line = JSON.parse(event);
+      lines.push(line);
+      // sockets.forEach(socket => socket.send(JSON.stringify(lines)));
+      // sockets.forEach(socket => socket.send(event));
+      // pingAllSockets();
+      updateSockets();
     } else if (isWebSocketCloseEvent(event)) {
       sockets.delete(socket);
     }
   }
 };
 
-export const pingAllSockets = async () => {
-  sockets.forEach(async socket => {
-    await socket.send('Ping!');
+export const pingAllSockets = () => {
+  sockets.forEach(socket => {
+    socket.send('Ping!');
   });
+};
+
+export const updateSockets = () => {
+  const linesString = JSON.stringify(lines);
+  sockets.forEach(socket => {
+    socket.send(linesString);
+  });
+};
+
+export const clearLines = () => {
+  lines.splice(0, lines.length);
 };

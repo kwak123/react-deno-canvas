@@ -4,14 +4,11 @@ import {
   isWebSocketCloseEvent,
   isWebSocketPingEvent,
   acceptWebSocket,
-  Application,
-  Router,
-  send,
   Response,
   exists,
 } from './deps.ts';
-import { addSocket } from './socket/socket.ts';
-import { walkSync } from 'https://deno.land/std@v0.37.1/fs/walk.ts';
+import { addSocket, clearLines } from './socket/socket.ts';
+
 const port = Deno.args[0] || '8080';
 
 const tryToServeFile = async (fileName: string) => {
@@ -24,7 +21,7 @@ const tryToServeFile = async (fileName: string) => {
     ]);
 
     const headers = new Headers();
-    headers.set('content-length', fileInfo.size.toString());
+    headers.set('content-length', fileInfo.len.toString());
 
     if (fileName.includes('.css')) {
       headers.set('content-type', 'text/css');
@@ -62,6 +59,10 @@ for await (const req of serve(`:${port}`)) {
     }
     if (req.url === '/api/set-socket') {
       addSocket(req);
+    }
+
+    if (req.url === '/api/clear') {
+      clearLines();
     }
   } catch (e) {
     const res = { status: 404 };

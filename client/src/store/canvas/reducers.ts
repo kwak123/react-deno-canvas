@@ -1,5 +1,5 @@
 import { Reducer, Action } from "@reduxjs/toolkit"
-import { CANVAS_ACTION, AddLineAction } from "./actions"
+import { CANVAS_ACTION, AddLineAction, SetStrokesAction } from "./actions"
 
 export interface CanvasCoordinate {
   lastX: number
@@ -34,6 +34,10 @@ const canvasReducer: Reducer<CanvasStore, Action> = (
         strokes: newStrokes,
       }
     }
+    case CANVAS_ACTION.SET_STROKES:
+      return {
+        strokes: (action as SetStrokesAction).strokes,
+      }
     default:
       return state
   }
