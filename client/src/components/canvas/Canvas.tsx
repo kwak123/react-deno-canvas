@@ -68,6 +68,7 @@ const Canvas = () => {
     const newY = clientY - whiteboard.offsetTop
     setLast({ x: currX, y: currY })
     setCurr({ x: newX, y: newY })
+    draw(whiteboard.getContext("2d"))
   }
 
   const onMouseDown = (event: MouseEvent) => {
@@ -114,11 +115,6 @@ const Canvas = () => {
       })
     }
   }
-
-  React.useEffect(() => {
-    const { current: whiteboard } = whiteboardRef
-    draw(whiteboard.getContext("2d"))
-  }, [curr])
 
   return (
     <HtmlCanvas
