@@ -2,8 +2,8 @@ import { WebSocket } from '../deps.ts';
 
 const rooms: Map<string, Room> = new Map();
 
-// lastx, lastY, currX, currY
-declare type LineTuple = [number, number, number, number];
+// lastx, lastY, currX, currY, color?
+declare type LineTuple = [number, number, number, number, number?];
 
 interface Line {
   id: string;

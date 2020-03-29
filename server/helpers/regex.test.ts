@@ -15,3 +15,10 @@ Deno.test(function shouldDetermineIfIncludesSocket() {
   assertEquals(result[1], '123');
   assertEquals(result[2], 'set-socket');
 });
+
+Deno.test(function shouldHandleMixedChars() {
+  const testStringWithMixedChars = '/api/room/yvq2n_zuQ/set-socket';
+  const result = testStringWithMixedChars.match(getRoomIdRegex)!;
+  assertEquals(result[1], 'yvq2n_zuQ');
+  assertEquals(result[2], 'set-socket');
+});

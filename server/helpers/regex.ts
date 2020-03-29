@@ -1,1 +1,1 @@
-export const getRoomIdRegex = /\/api\/room\/(\d+)\/?(set-socket)?/;
+export const getRoomIdRegex = /\/api\/room\/(\w+)\/?(set-socket)?/;
