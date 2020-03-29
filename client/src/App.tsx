@@ -6,9 +6,6 @@ import store from "./store"
 import services from "./services"
 
 const App = () => {
-  useEffect(() => {
-    services.roomsService.getRoomNames().then((data) => console.log(data))
-  })
   return (
     <React.StrictMode>
       <Provider store={store}>

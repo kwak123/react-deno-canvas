@@ -15,7 +15,7 @@ export interface Room {
 export type RoomResponse = Room[]
 
 export class RoomsHelper {
-  async getRoomNames() {
+  async getRooms() {
     try {
       const roomNamesResponse = await axios.get(RoomsEndpoint.getAllRooms)
       return roomNamesResponse.data as RoomResponse
