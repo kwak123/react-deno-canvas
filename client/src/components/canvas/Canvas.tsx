@@ -33,27 +33,15 @@ const Canvas = () => {
     }
   }
 
-  const undoDraw = () => {
-    dispatch(undoStrokeFromService())
-  }
-
-  const hardUndo = () => {
-    services.socketService.sendMessage({ forceDelete: true })
-  }
-
   // Ref can likely fix a lot of the bloat in here
   return (
-    <>
-      <button onClick={undoDraw}>Undo</button>
-      <button onClick={hardUndo}>Hard undo</button>
-      <CanvasElement
-        strokes={strokes}
-        handleDrawStart={handleDrawStart}
-        handleDrawMove={handleDrawMove}
-        handleDrawStop={handleDrawStop}
-        allowDrawing={true}
-      />
-    </>
+    <CanvasElement
+      strokes={strokes}
+      handleDrawStart={handleDrawStart}
+      handleDrawMove={handleDrawMove}
+      handleDrawStop={handleDrawStop}
+      allowDrawing={true}
+    />
   )
 }
 

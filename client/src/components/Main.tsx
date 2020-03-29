@@ -41,10 +41,13 @@ const Title = styled.h1`
 
 const ContentContainer = styled.div`
   display: flex;
-  justify-content: center;
   padding: 32px 24px 0;
   height: calc(100vh - 96px);
   width: calc(100vw - 48px);
+
+  @media only screen and (min-width: 1200px) {
+    justify-content: center;
+  }
 `
 
 const Content = styled.article`

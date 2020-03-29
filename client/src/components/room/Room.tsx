@@ -8,13 +8,18 @@ import { Room } from "../../services/rooms"
 
 import { setStrokes } from "../../store/canvas/actions"
 
+import Sidebar from "./Sidebar"
 import Canvas from "../canvas/Canvas"
 
 interface RoomQueryParams {
   roomId: string
 }
 
-const Container = styled.div``
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
 
 const RoomTitle = styled.h2``
 
@@ -41,6 +46,7 @@ const Room = () => {
   return (
     <Container>
       <h2>{room?.title || "Untitled"}</h2>
+      <Sidebar />
       <Canvas />
     </Container>
   )
