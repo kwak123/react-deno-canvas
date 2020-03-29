@@ -1,12 +1,4 @@
-import {
-  serve,
-  WebSocket,
-  isWebSocketCloseEvent,
-  isWebSocketPingEvent,
-  acceptWebSocket,
-  Response,
-  exists,
-} from './deps.ts';
+import { serve, exists } from './deps.ts';
 import { addSocket, clearLines } from './socket/socket.ts';
 
 const port = Deno.args[0] || '8080';
@@ -15,10 +7,22 @@ const tryToServeFile = async (fileName: string) => {
   const distDirectory = `${Deno.cwd()}/../dist`;
   const filePath = `${distDirectory}${fileName}`;
   try {
-    const [file, fileInfo] = await Promise.all([
-      Deno.open(filePath),
-      Deno.stat(filePath),
-    ]);
+    const fileExists = await exists(filePath);
+    let file: Deno.File;
+    let fileInfo: Deno.FileInfo;
+
+    if (fileExists) {
+      [file, fileInfo] = await Promise.all([
+        Deno.open(filePath),
+        Deno.stat(filePath),
+      ]);
+    } else {
+      const indexHtmlPath = `${distDirectory}/index.html`;
+      [file, fileInfo] = await Promise.all([
+        Deno.open(indexHtmlPath),
+        Deno.stat(indexHtmlPath),
+      ]);
+    }
 
     const headers = new Headers();
     headers.set('content-length', fileInfo.len.toString());
@@ -47,28 +51,19 @@ const tryToServeFile = async (fileName: string) => {
 };
 
 for await (const req of serve(`:${port}`)) {
-  const { headers, conn } = req;
   try {
-    if (
-      req.url === '/' ||
-      req.url.includes('.js') ||
-      req.url.includes('.css') ||
-      req.url.includes('.png')
-    ) {
-      if (req.url === '/') {
-        const res = await tryToServeFile('/index.html');
-        await req.respond(res);
-      } else {
-        const res = await tryToServeFile(req.url);
-        await req.respond(res);
-      }
-    }
     if (req.url === '/api/set-socket') {
       addSocket(req);
-    }
-
-    if (req.url === '/api/clear') {
+    } else if (req.url === '/api/clear') {
       clearLines();
+    } else {
+      let res;
+      if (req.url === '/') {
+        res = await tryToServeFile('/index.html');
+      } else {
+        res = await tryToServeFile(req.url);
+      }
+      await req.respond(res);
     }
   } catch (e) {
     const res = { status: 404 };
