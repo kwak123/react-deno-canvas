@@ -18,20 +18,25 @@ interface DeleteLineRequest {
 interface Room {
   sockets: Set<WebSocket>;
   lines: Line[];
+  title: string;
   addSocket: (socket: WebSocket) => Promise<void>;
   deleteSocket: (socket: WebSocket) => void;
   updateSockets: () => void;
   addLine: (line: Line) => void;
   deleteLine: (lineId: string) => void;
+  count: () => number;
+  setTitle: (title: string) => void;
 }
 
 class RoomImpl implements Room {
   sockets: Set<WebSocket>;
   lines: Line[];
+  title: string;
 
   constructor() {
     this.sockets = new Set();
     this.lines = [];
+    this.title = '';
   }
 
   async addSocket(socket: WebSocket) {
@@ -78,6 +83,14 @@ class RoomImpl implements Room {
     });
     socketsToDelete.forEach(socket => this.sockets.delete(socket));
   }
+
+  count() {
+    return this.sockets.size;
+  }
+
+  setTitle(title: string) {
+    this.title = title;
+  }
 }
 
 export class RoomHelper {
@@ -89,6 +102,9 @@ export class RoomHelper {
     return rooms.get(roomId) as Room;
   }
   getRoomNames() {
-    return rooms.keys();
+    return [...rooms.keys()];
+  }
+  getRooms() {
+    return [...rooms.entries()];
   }
 }

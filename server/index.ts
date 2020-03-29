@@ -1,7 +1,14 @@
-import { serve, ServerRequest } from './deps.ts';
+import {
+  serve,
+  ServerRequest,
+  isWebSocketPingEvent,
+  isWebSocketPongEvent,
+} from './deps.ts';
 import { getSocket } from './socket/socket.ts';
 import { RoomHelper } from './rooms/rooms.ts';
 import { getFileOrIndexHtml } from './helpers/files.ts';
+import { getRoomIdRegex } from './helpers/regex.ts';
+
 const roomHelper = new RoomHelper();
 
 const port = Deno.args[0] || '8080';
@@ -50,11 +57,11 @@ enum ReqMethod {
 }
 
 for await (const req of serve(`:${port}`)) {
-  console.log(`Received ${req.method} request to ${req.url}`);
+  // console.log(`Received ${req.method} request to ${req.url}`);
   try {
     if (req.url === '/api/rooms') {
       if (req.method === ReqMethod.GET) {
-        const body = JSON.stringify(Array.from(roomHelper.getRoomNames()));
+        const body = JSON.stringify(roomHelper.getRoomNames());
         req.respond({
           status: 200,
           body,
@@ -63,11 +70,15 @@ for await (const req of serve(`:${port}`)) {
         send404(req);
       }
     } else if (req.url.includes('/api/room')) {
-      const [, roomId] = req.url.match(/\/api\/room(\/[\d]+)?/)!;
-      if (roomId) {
+      const [, roomId, shouldSetSocket] = req.url.match(getRoomIdRegex)!;
+      if (roomId && shouldSetSocket) {
         const room = roomHelper.getOrCreateRoom(roomId as string);
         const socket = await getSocket(req);
         room.addSocket(socket);
+      } else if (roomId) {
+        req.respond({ status: 200 });
+      } else {
+        send404(req);
       }
     } else {
       let res;
