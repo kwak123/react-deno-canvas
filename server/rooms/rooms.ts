@@ -111,7 +111,7 @@ export class RoomHelper {
       return {
         id: key,
         title: room.title,
-        count: room.count,
+        count: room.count(),
         lines: room.lines,
       };
     });
