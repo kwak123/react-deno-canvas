@@ -34,7 +34,9 @@ interface CanvasElementProps {
   allowDrawing?: boolean
 }
 
-const HtmlCanvas = styled.canvas``
+const HtmlCanvas = styled.canvas`
+  margin-right: 24px;
+`
 
 const defaultWidth = 1320
 const defaultHeight = 720
