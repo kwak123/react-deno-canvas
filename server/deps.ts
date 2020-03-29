@@ -13,3 +13,5 @@ export {
 export { v4 } from 'https://deno.land/std@v0.36.0/uuid/mod.ts';
 
 export { exists } from 'https://deno.land/std@v0.36.0/fs/mod.ts';
+
+export * as asserts from 'https://deno.land/std@v0.36.0/testing/asserts.ts';

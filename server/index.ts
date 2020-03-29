@@ -1,40 +1,31 @@
 import { serve, exists } from './deps.ts';
 import { getSocket } from './socket/socket.ts';
 import { RoomHelper } from './rooms/rooms.ts';
+import { getFileOrIndexHtml } from './helpers/files.ts';
 
 const roomHelper = new RoomHelper();
 
 const port = Deno.args[0] || '8080';
 
+console.log(`Server listening on port ${port}`);
 const tryToServeFile = async (fileName: string) => {
   const distDirectory = `${Deno.cwd()}/../dist`;
-  const filePath = `${distDirectory}${fileName}`;
   try {
-    const fileExists = await exists(filePath);
-    let file: Deno.File;
-    let fileInfo: Deno.FileInfo;
-
-    if (fileExists) {
-      [file, fileInfo] = await Promise.all([
-        Deno.open(filePath),
-        Deno.stat(filePath),
-      ]);
-    } else {
-      const indexHtmlPath = `${distDirectory}/index.html`;
-      [file, fileInfo] = await Promise.all([
-        Deno.open(indexHtmlPath),
-        Deno.stat(indexHtmlPath),
-      ]);
+    const gottenFile = await getFileOrIndexHtml(distDirectory, fileName);
+    if (!gottenFile) {
+      throw 'File not found';
     }
+
+    const { file, fileInfo, fileType } = gottenFile;
 
     const headers = new Headers();
     headers.set('content-length', fileInfo.len.toString());
 
-    if (fileName.includes('.css')) {
+    if (fileType === 'css') {
       headers.set('content-type', 'text/css');
     }
 
-    if (fileName.includes('.png')) {
+    if (fileType === 'png') {
       headers.set('Cache-Control', 'max-age=86400');
       headers.set('Content-Type', 'image/png');
     }
