@@ -54,6 +54,10 @@ const Divider = styled.div`
   width: 1px;
   height: 48px;
   background-color: ${COLORS.PURPLE_MUTE};
+
+  @media only screen and (min-width: 640px) {
+    display: none;
+  }
 `
 
 const Sidebar = () => {
