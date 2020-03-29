@@ -24,12 +24,13 @@ export interface DrawMoveEvent {
 export interface DrawStopEvent {}
 
 interface CanvasElementProps {
-  handleDrawStart: (event: DrawStartEvent) => void
-  handleDrawMove: (event: DrawMoveEvent) => void
-  handleDrawStop: (event: DrawStopEvent) => void
+  handleDrawStart?: (event: DrawStartEvent) => void
+  handleDrawMove?: (event: DrawMoveEvent) => void
+  handleDrawStop?: (event: DrawStopEvent) => void
   height: number
   width: number
   strokes: CanvasStroke[]
+  allowDrawing: boolean
 }
 
 const HtmlCanvas = styled.canvas``
@@ -41,6 +42,7 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   height,
   width,
   strokes,
+  allowDrawing = true,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [shouldDraw, setShouldDraw] = useState(false)
@@ -49,26 +51,30 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   const [curr, setCurr] = useState<Position>({ x: 0, y: 0 })
 
   const drawStart = ({ x: clientX, y: clientY }: Position) => {
-    const { current: whiteboard } = canvasRef
-    const newX = clientX - whiteboard.offsetLeft
-    const newY = clientY - whiteboard.offsetTop
-    setLast({ x: newX, y: newY })
-    setCurr({ x: newX, y: newY })
-    setShouldDraw(true)
+    if (allowDrawing) {
+      const { current: whiteboard } = canvasRef
+      const newX = clientX - whiteboard.offsetLeft
+      const newY = clientY - whiteboard.offsetTop
+      setLast({ x: newX, y: newY })
+      setCurr({ x: newX, y: newY })
+      setShouldDraw(true)
 
-    handleDrawStart({ clientX, clientY })
+      handleDrawStart({ clientX, clientY })
+    }
   }
 
   const drawMove = ({ x: clientX, y: clientY }: Position) => {
-    const { current: whiteboard } = canvasRef
-    const { x: currX, y: currY } = curr
-    const newX = clientX - whiteboard.offsetLeft
-    const newY = clientY - whiteboard.offsetTop
-    setLast({ x: currX, y: currY })
-    setCurr({ x: newX, y: newY })
-    draw(whiteboard.getContext("2d"), last, curr)
+    if (allowDrawing) {
+      const { current: whiteboard } = canvasRef
+      const { x: currX, y: currY } = curr
+      const newX = clientX - whiteboard.offsetLeft
+      const newY = clientY - whiteboard.offsetTop
+      setLast({ x: currX, y: currY })
+      setCurr({ x: newX, y: newY })
+      draw(whiteboard.getContext("2d"), last, curr)
 
-    handleDrawMove({ lastX: currX, lastY: currY, currX: newX, currY: newY })
+      handleDrawMove({ lastX: currX, lastY: currY, currX: newX, currY: newY })
+    }
   }
 
   const onMouseDown = (event: MouseEvent) => {
