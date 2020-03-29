@@ -49,6 +49,8 @@ class RoomImpl implements Room {
         const line = JSON.parse(event);
         if (line.delete) {
           this.deleteLine((line as DeleteLineRequest).id);
+        } else if (line.forceDelete) {
+          this.lines.pop();
         } else {
           this.addLine(line);
         }
