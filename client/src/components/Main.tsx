@@ -1,11 +1,17 @@
 import * as React from "react"
 import styled from "styled-components"
 
+import RoomList from "./roomList/RoomList"
 import Canvas from "./canvas/Canvas"
 import { COLORS, TYPOGRAPHY } from "./styling"
 
+const mockRoomList: RoomResponse = [
+  { id: "123", title: "Room Card!!", count: 2, lines: [] },
+]
+
 // @ts-ignore
 import athenaLogo from "../assets/athena-logo.png"
+import { RoomResponse } from "../services/rooms"
 
 const Container = styled.div``
 const Header = styled.header`
@@ -49,9 +55,10 @@ class Main extends React.Component {
             <Title>Simple React Canvas</Title>
           </LogoContainer>
         </Header>
-        <Content>
+        <RoomList roomList={mockRoomList} />
+        {/* <Content>
           <Canvas />
-        </Content>
+        </Content> */}
       </Container>
     )
   }
