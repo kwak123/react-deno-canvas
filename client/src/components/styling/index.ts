@@ -4,6 +4,9 @@ export enum COLORS {
   GRAY_ICE = "#BCC4DB",
   CYAN_ISH = "#0FA3B1",
   BLUE_CENOTE = "#3F7CAC",
+  WHITE_CREAM = "#EFECD2",
+  BLUE_DARK = "#0E2692",
+  BLUE_OCEAN = "#3C5FA6",
 }
 
 export enum TYPOGRAPHY {

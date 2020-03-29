@@ -9,10 +9,12 @@ interface RoomListProps {
 }
 
 const ListContainer = styled.div`
+  width: 100%;
   display: grid;
   grid-column-gap: 32px;
   grid-row-gap: 32px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  justify-items: center;
 `
 
 const RoomList: React.FC<RoomListProps> = ({ roomList }) => {

@@ -43,12 +43,14 @@ const Title = styled.h1`
 const ContentContainer = styled.div`
   display: flex;
   justify-content: center;
-  padding-top: 32px;
+  padding: 32px 24px 0;
   height: calc(100vh - 96px);
+  width: calc(100vw - 48px);
 `
 
 const Content = styled.article`
   max-width: 1320px;
+  width: 1320px;
 `
 
 class Main extends React.Component {
