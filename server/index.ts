@@ -25,7 +25,7 @@ const tryToServeFile = async (fileName: string) => {
     const { file, fileInfo, fileType } = gottenFile;
 
     const headers = new Headers();
-    headers.set('content-length', fileInfo.len.toString());
+    headers.set('content-length', fileInfo.size.toString());
 
     if (fileType === 'css') {
       headers.set('content-type', 'text/css');
