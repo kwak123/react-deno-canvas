@@ -1,5 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
+import { BrowserRouter, Switch, Route } from "react-router-dom"
 
 import RoomList from "./roomList/RoomList"
 import Canvas from "./canvas/Canvas"
@@ -65,8 +66,16 @@ class Main extends React.Component {
         </Header>
         <ContentContainer>
           <Content>
-            {/* <Canvas /> */}
-            <RoomList roomList={mockRoomList} />
+            <BrowserRouter>
+              <Switch>
+                <Route path="/room/:roomId">
+                  <Canvas />
+                </Route>
+                <Route path="/">
+                  <RoomList roomList={mockRoomList} />
+                </Route>
+              </Switch>
+            </BrowserRouter>
           </Content>
         </ContentContainer>
       </Container>

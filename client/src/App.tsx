@@ -11,9 +11,11 @@ const App = () => {
     services.roomsService.getRoomNames().then((data) => console.log(data))
   })
   return (
-    <Provider store={store}>
-      <Main />
-    </Provider>
+    <React.StrictMode>
+      <Provider store={store}>
+        <Main />
+      </Provider>
+    </React.StrictMode>
   )
 }
 
