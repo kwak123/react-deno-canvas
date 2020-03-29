@@ -1,9 +1,9 @@
-import { RoomResponse } from "src/services/rooms"
+import { RoomResponse } from "../services/rooms"
 
 export default [
   {
     id: "123",
-    title: "",
+    title: "Test",
     count: 1,
     lines: [
       {
@@ -708,5 +708,41 @@ export default [
         ],
       },
     ],
+  },
+  {
+    id: "2",
+    title: "room 2",
+    count: 0,
+    lines: [],
+  },
+  {
+    id: "3",
+    title: "room 3",
+    count: 0,
+    lines: [],
+  },
+  {
+    id: "4",
+    title: "room 4",
+    count: 0,
+    lines: [],
+  },
+  {
+    id: "5",
+    title: "room 4",
+    count: 0,
+    lines: [],
+  },
+  {
+    id: "6",
+    title: "room 4",
+    count: 0,
+    lines: [],
+  },
+  {
+    id: "7",
+    title: "room 4",
+    count: 0,
+    lines: [],
   },
 ] as RoomResponse

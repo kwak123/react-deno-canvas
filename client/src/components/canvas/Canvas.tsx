@@ -1,5 +1,4 @@
-import React, { useState, useRef, MouseEvent, TouchEvent } from "react"
-import styled from "styled-components"
+import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import CanvasElement, { DrawStartEvent, DrawMoveEvent } from "./CanvasElement"

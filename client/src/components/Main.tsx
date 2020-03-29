@@ -12,6 +12,7 @@ import athenaLogo from "../assets/athena-logo.png"
 import { RoomResponse } from "../services/rooms"
 
 const Container = styled.div``
+
 const Header = styled.header`
   background-color: ${COLORS.BLACK_NEAR};
   height: 64px;
@@ -39,8 +40,15 @@ const Title = styled.h1`
   font-size: 24px;
 `
 
+const ContentContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 32px;
+  height: calc(100vh - 96px);
+`
+
 const Content = styled.article`
-  margin-top: 32px;
+  max-width: 1320px;
 `
 
 class Main extends React.Component {
@@ -53,10 +61,12 @@ class Main extends React.Component {
             <Title>Simple React Canvas</Title>
           </LogoContainer>
         </Header>
-        <RoomList roomList={mockRoomList} />
-        <Content>
-          <Canvas />
-        </Content>
+        <ContentContainer>
+          <Content>
+            {/* <Canvas /> */}
+            <RoomList roomList={mockRoomList} />
+          </Content>
+        </ContentContainer>
       </Container>
     )
   }
