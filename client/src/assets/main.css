@@ -30,6 +30,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	font-family: 'Sen', sans-serif;
 }
 ol, ul {
 	list-style: none;
@@ -48,3 +49,6 @@ table {
 }
 
 /* Your styling below */
+body {
+	background-color: #8AA1B1
+}

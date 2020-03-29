@@ -59,22 +59,11 @@ const Canvas = () => {
   }) => {
     canvasHelper.start()
     const { current: whiteboard } = whiteboardRef
-    const ctx = whiteboard.getContext("2d")
-    // Need to move x/y here
     const newX = clientX - whiteboard.offsetLeft
     const newY = clientY - whiteboard.offsetTop
     setLast({ x: newX, y: newY })
     setCurr({ x: newX, y: newY })
     setShouldDraw(true)
-    // setIsDot(true)
-
-    // if (isDot) {
-    //   ctx.beginPath()
-    //   ctx.fillStyle = "black"
-    //   ctx.fillRect(newX, newY, 2, 2)
-    //   ctx.closePath()
-    //   setIsDot(false)
-    // }
   }
 
   const handleMoveDraw = ({
@@ -173,7 +162,6 @@ const Canvas = () => {
   }
 
   React.useEffect(() => {
-    console.log("Detected selector change")
     refreshCanvas()
   }, [strokes])
 
