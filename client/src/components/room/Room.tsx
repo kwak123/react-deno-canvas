@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { useDispatch } from "react-redux"
+import styled from "styled-components"
+
 import services from "../../services"
 import { Room } from "../../services/rooms"
 
@@ -11,6 +13,8 @@ import Canvas from "../canvas/Canvas"
 interface RoomQueryParams {
   roomId: string
 }
+
+const Container = styled.div``
 
 const Room = () => {
   const dispatch = useDispatch()
@@ -30,10 +34,10 @@ const Room = () => {
   }, [roomId])
 
   return (
-    <div>
+    <Container>
       <h2>{room?.title || "Untitled"}</h2>
       <Canvas />
-    </div>
+    </Container>
   )
 }
 

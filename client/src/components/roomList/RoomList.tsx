@@ -1,12 +1,16 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
+import services from "../../services"
 import { RoomResponse } from "../../services/rooms"
+import HeartSpinner from "../loadingSpinner/HeartSpinner"
 import RoomCard from "./RoomCard"
 import AddRoomCard from "./AddRoomCard"
 
-interface RoomListProps {
-  roomList: RoomResponse
-}
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 const ListContainer = styled.div`
   width: 100%;
@@ -17,17 +21,28 @@ const ListContainer = styled.div`
   justify-items: center;
 `
 
-const RoomList: React.FC<RoomListProps> = ({ roomList }) => {
-  return (
-    <div>
-      <ListContainer>
-        {roomList.map((room) => (
-          <RoomCard key={room.id} room={room} />
-        ))}
-        <AddRoomCard />
-      </ListContainer>
-    </div>
+const RoomList = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [roomList, setRoomList] = useState([])
+
+  useEffect(() => {
+    setIsLoading(true)
+    services.roomsService.getRooms().then((roomResponse) => {
+      setIsLoading(false)
+      setRoomList(roomResponse)
+    })
+  }, [])
+
+  const list = (
+    <ListContainer>
+      {roomList.map((room) => (
+        <RoomCard key={room.id} room={room} />
+      ))}
+      <AddRoomCard />
+    </ListContainer>
   )
+
+  return <Container>{isLoading ? HeartSpinner : list}</Container>
 }
 
 export default RoomList
