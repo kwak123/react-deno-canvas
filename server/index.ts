@@ -15,13 +15,10 @@ const tryToServeFile = async (fileName: string) => {
   const distDirectory = `${Deno.cwd()}/../dist`;
   const filePath = `${distDirectory}${fileName}`;
   try {
-    console.log('Reading fileName ' + fileName);
     const [file, fileInfo] = await Promise.all([
       Deno.open(filePath),
       Deno.stat(filePath),
     ]);
-
-    console.log('Finished fileName ' + fileName);
 
     const headers = new Headers();
     headers.set('content-length', fileInfo.len.toString());
@@ -31,7 +28,6 @@ const tryToServeFile = async (fileName: string) => {
     }
 
     if (fileName.includes('.png')) {
-      console.log('Serving png');
       headers.set('Cache-Control', 'max-age=86400');
       headers.set('Content-Type', 'image/png');
     }
