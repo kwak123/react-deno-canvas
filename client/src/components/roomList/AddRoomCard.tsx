@@ -21,7 +21,7 @@ const ButtonContainer = styled.div`
 `
 
 const AddSignSpan = styled.span`
-  font-size: 24px;
+  font-size: 28px;
   margin-right: 8px;
 `
 
@@ -39,8 +39,9 @@ const AddRoomCard = () => (
   <Container>
     <AddCardContainer>
       <ButtonContainer>
-        <AddSignSpan>+</AddSignSpan>
-        <CreateRoom>Create Room</CreateRoom>
+        <CreateRoom onClick={() => {}}>
+          <AddSignSpan>+</AddSignSpan>Create Room
+        </CreateRoom>
       </ButtonContainer>
     </AddCardContainer>
   </Container>
