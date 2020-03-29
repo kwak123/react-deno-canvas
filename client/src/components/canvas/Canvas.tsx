@@ -10,21 +10,12 @@ import {
 } from "../../store/canvas/actions"
 import { selectStrokes } from "../../store/canvas/selectors"
 
-interface Position {
-  x: number
-  y: number
-}
-
-const HtmlCanvas = styled.canvas`
-  border: 1px solid black;
-`
-
 const canvasHelper = new CanvasHelper()
 
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
   const width = 1200
-  const height = 600
+  const height = 720
   const dispatch = useDispatch()
   const strokes = useSelector(selectStrokes)
 

@@ -29,6 +29,7 @@ const Logo = styled.img`
 `
 
 const Title = styled.h1`
+  margin-left: 8px;
   color: ${COLORS.GRAY_ICE};
   font-family: ${TYPOGRAPHY.SEN};
   font-size: 24px;
