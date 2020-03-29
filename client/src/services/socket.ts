@@ -9,23 +9,23 @@ let socket: WebSocket
 
 export class SocketHelper {
   initializeSocket() {
-    // if (!socket) {
-    //   socket = new WebSocket(socketUrl)
-    //   socket.onopen = () => {
-    //     console.log("Socket opening")
-    //   }
-    //   socket.onmessage = (message) => {
-    //     // console.log("message", message)
-    //     const strokes: CanvasStroke[] = JSON.parse(message.data as string)
-    //     store.dispatch(setStrokes(strokes))
-    //   }
-    //   socket.onerror = (e) => {
-    //     console.error(e)
-    //   }
-    // }
+    if (!socket) {
+      socket = new WebSocket(socketUrl)
+      socket.onopen = () => {
+        console.log("Socket opening")
+      }
+      socket.onmessage = (message) => {
+        // console.log("message", message)
+        const strokes: CanvasStroke[] = JSON.parse(message.data as string)
+        store.dispatch(setStrokes(strokes))
+      }
+      socket.onerror = (e) => {
+        console.error(e)
+      }
+    }
   }
   getSocket = () => socket
   sendMessage = (message: any) => {
-    // socket.send(JSON.stringify(message))
+    socket.send(JSON.stringify(message))
   }
 }
