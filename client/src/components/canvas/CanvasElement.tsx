@@ -27,20 +27,25 @@ interface CanvasElementProps {
   handleDrawStart?: (event: DrawStartEvent) => void
   handleDrawMove?: (event: DrawMoveEvent) => void
   handleDrawStop?: (event: DrawStopEvent) => void
-  height: number
-  width: number
+  // height: number
+  // width: number
+  scale?: number
   strokes: CanvasStroke[]
-  allowDrawing: boolean
+  allowDrawing?: boolean
 }
 
 const HtmlCanvas = styled.canvas``
+
+const defaultWidth = 1200
+const defaultHeight = 720
 
 const CanvasElement: React.FC<CanvasElementProps> = ({
   handleDrawStart,
   handleDrawMove,
   handleDrawStop,
-  height,
-  width,
+  // height,
+  // width,
+  scale = 1,
   strokes,
   allowDrawing = true,
 }) => {
@@ -77,6 +82,12 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
     }
   }
 
+  const drawStop = () => {
+    if (allowDrawing) {
+      handleDrawStop({})
+    }
+  }
+
   const onMouseDown = (event: MouseEvent) => {
     drawStart({
       x: event.clientX,
@@ -86,7 +97,7 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
 
   const onMouseUp = (event: MouseEvent) => {
     setShouldDraw(false)
-    handleDrawStop({})
+    drawStop()
   }
 
   const onMouseMove = (event: MouseEvent) => {
@@ -113,7 +124,7 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   const onTouchEnd = (event: TouchEvent) => {
     setIsMultiFinger(false)
     setShouldDraw(false)
-    handleDrawStop({})
+    drawStop()
   }
 
   const onTouchMove = (event: TouchEvent) => {
@@ -153,7 +164,15 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
     const context = whiteboard.getContext("2d")
     strokes.forEach((stroke) => {
       stroke.data.forEach(([lastX, lastY, currX, currY]) => {
-        draw(context, { x: lastX, y: lastY }, { x: currX, y: currY })
+        const scaledLastX = Math.floor(lastX * scale)
+        const scaledLastY = Math.floor(lastY * scale)
+        const scaledcurrX = Math.floor(currX * scale)
+        const scaledCurrY = Math.floor(currY * scale)
+        draw(
+          context,
+          { x: scaledLastX, y: scaledLastY },
+          { x: scaledcurrX, y: scaledCurrY }
+        )
       })
     })
   }
@@ -166,8 +185,8 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
     <HtmlCanvas
       ref={canvasRef}
       style={{ touchAction: isMultiFinger ? "auto" : "pinch-zoom" }}
-      width={width}
-      height={height}
+      width={Math.floor(defaultWidth * scale)}
+      height={Math.floor(defaultHeight * scale)}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseMove={onMouseMove}

@@ -5,9 +5,7 @@ import RoomList from "./roomList/RoomList"
 import Canvas from "./canvas/Canvas"
 import { COLORS, TYPOGRAPHY } from "./styling"
 
-const mockRoomList: RoomResponse = [
-  { id: "123", title: "Room Card!!", count: 2, lines: [] },
-]
+import mockRoomList from "./mockRoomList"
 
 // @ts-ignore
 import athenaLogo from "../assets/athena-logo.png"
@@ -56,9 +54,9 @@ class Main extends React.Component {
           </LogoContainer>
         </Header>
         <RoomList roomList={mockRoomList} />
-        {/* <Content>
+        <Content>
           <Canvas />
-        </Content> */}
+        </Content>
       </Container>
     )
   }

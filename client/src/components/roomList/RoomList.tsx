@@ -10,7 +10,7 @@ const RoomList: React.FC<RoomListProps> = ({ roomList }) => {
   return (
     <div>
       {roomList.map((room) => (
-        <RoomCard key={room.id} />
+        <RoomCard key={room.id} room={room} />
       ))}
     </div>
   )

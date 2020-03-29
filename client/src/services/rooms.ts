@@ -5,7 +5,7 @@ enum RoomsEndpoint {
   getAllRooms = "/api/rooms",
 }
 
-interface Room {
+export interface Room {
   id: string
   title: string
   count: number

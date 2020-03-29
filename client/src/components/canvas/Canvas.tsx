@@ -14,8 +14,6 @@ const canvasHelper = new CanvasHelper()
 
 /* Adapted from https://stackoverflow.com/a/8398189 */
 const Canvas = () => {
-  const width = 1200
-  const height = 720
   const dispatch = useDispatch()
   const strokes = useSelector(selectStrokes)
 
@@ -44,12 +42,11 @@ const Canvas = () => {
     <>
       <button onClick={undoDraw}>Undo</button>
       <CanvasElement
-        height={height}
-        width={width}
         strokes={strokes}
         handleDrawStart={handleDrawStart}
         handleDrawMove={handleDrawMove}
         handleDrawStop={handleDrawStop}
+        allowDrawing={true}
       />
     </>
   )
