@@ -10,19 +10,27 @@ const serverUrl = "bcab44a0.ngrok.io"
 export class SocketHelper {
   socket: WebSocket
 
-  initializeSocket(roomId: string) {
+  initializeSocket(
+    roomId: string,
+    socketConnectedCb: (success: boolean) => void
+  ) {
     if (!this.socket) {
       const socketUrl = `wss://${serverUrl}/api/room/${roomId}/set-socket`
       this.socket = new WebSocket(socketUrl)
       this.socket.onopen = () => {
         console.log(`Socket opening for ${roomId}`)
       }
-      this.socket.onmessage = (message) => {
+      this.socket.onerror = (e) => {
+        socketConnectedCb(false)
+        console.error(e)
+      }
+    }
+    this.socket.onmessage = (message) => {
+      if (message.data === "Connected!") {
+        socketConnectedCb(true)
+      } else {
         const strokes: CanvasStroke[] = JSON.parse(message.data as string)
         store.dispatch(setStrokes(strokes))
-      }
-      this.socket.onerror = (e) => {
-        console.error(e)
       }
     }
   }

@@ -1,5 +1,5 @@
 import { WebSocket } from '../deps.ts';
-
+import { isWebSocketCloseEvent } from 'https://deno.land/std@v0.36.0/ws/mod.ts';
 const rooms: Map<string, Room> = new Map();
 
 // lastx, lastY, currX, currY, color?
@@ -41,6 +41,7 @@ class RoomImpl implements Room {
 
   async addSocket(socket: WebSocket) {
     this.sockets.add(socket);
+    socket.send('Connected!');
     this.updateSockets();
 
     for await (const event of socket.receive()) {
@@ -52,6 +53,8 @@ class RoomImpl implements Room {
           this.addLine(line);
         }
         this.updateSockets();
+      } else if (isWebSocketCloseEvent(event)) {
+        this.sockets.delete(socket);
       }
     }
   }

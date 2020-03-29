@@ -16,6 +16,8 @@ interface RoomQueryParams {
 
 const Container = styled.div``
 
+const RoomTitle = styled.h2``
+
 const Room = () => {
   const dispatch = useDispatch()
   const params = useParams<RoomQueryParams>()
@@ -23,10 +25,13 @@ const Room = () => {
   const [room, setRoom] = useState<Room>(null)
 
   useEffect(() => {
-    services.socketService.initializeSocket(roomId)
-    services.roomsService
-      .getRoom(roomId)
-      .then((roomFromApi) => setRoom(roomFromApi))
+    services.socketService.initializeSocket(roomId, (success: boolean) => {
+      if (success) {
+        services.roomsService
+          .getRoom(roomId)
+          .then((roomFromApi) => setRoom(roomFromApi))
+      }
+    })
     return function clean() {
       services.socketService.closeSocket()
       dispatch(setStrokes([]))

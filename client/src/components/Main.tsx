@@ -53,14 +53,6 @@ const Content = styled.article`
 `
 
 const Main = () => {
-  const [roomList, setRoomList] = useState([])
-
-  useEffect(() => {
-    services.roomsService.getRooms().then((roomResponse) => {
-      setRoomList(roomResponse)
-    })
-  }, [])
-
   return (
     <BrowserRouter>
       <Container>
@@ -79,7 +71,7 @@ const Main = () => {
                 <Room />
               </Route>
               <Route path="/">
-                <RoomList roomList={roomList} />
+                <RoomList />
               </Route>
             </Switch>
           </Content>
