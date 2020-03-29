@@ -3,14 +3,13 @@ import styled from "styled-components"
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom"
 
 import RoomList from "./roomList/RoomList"
-import Canvas from "./canvas/Canvas"
+import Room from "./room/Room"
 import { COLORS, TYPOGRAPHY } from "./styling"
 
 import mockRoomList from "./mockRoomList"
 
 // @ts-ignore
 import athenaLogo from "../assets/athena-logo.png"
-import { RoomResponse } from "../services/rooms"
 
 const Container = styled.div``
 
@@ -71,7 +70,7 @@ class Main extends React.Component {
             <Content>
               <Switch>
                 <Route path="/room/:roomId">
-                  <Canvas />
+                  <Room />
                 </Route>
                 <Route path="/">
                   <RoomList roomList={mockRoomList} />

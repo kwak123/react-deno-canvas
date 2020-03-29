@@ -13,9 +13,13 @@ import { GlobalState } from "../"
 
 const getMockService: () => AppService = () => ({
   socketService: {
+    socket: null,
     initializeSocket: jest.fn(),
     sendMessage: jest.fn(),
-    getSocket: jest.fn(),
+    closeSocket: jest.fn(),
+  },
+  roomsService: {
+    getRoomNames: jest.fn(),
   },
 })
 

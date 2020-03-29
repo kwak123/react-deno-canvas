@@ -2,6 +2,8 @@ import { Action, ActionCreator } from "@reduxjs/toolkit"
 import { CanvasStroke } from "./reducers"
 import { ServiceThunkResult } from "../index"
 
+import services from "../../services"
+
 export enum CANVAS_ACTION {
   ADD_STROKE,
   UNDO_STROKE,
@@ -23,7 +25,7 @@ export interface SetStrokesAction extends Action<CANVAS_ACTION> {
 export const sendStrokeToService: (
   stroke: CanvasStroke
 ) => ServiceThunkResult<any> = (stroke) => (dispatch, getState, service) => {
-  service.socketService.sendMessage(stroke)
+  services.socketService.sendMessage(stroke)
   return dispatch(addStroke(stroke))
 }
 
@@ -34,7 +36,7 @@ export const undoStrokeFromService: () => ServiceThunkResult<any> = () => (
 ) => {
   const userStrokes = getState().canvas.userStrokes
   const lastUserMessageId = userStrokes[userStrokes.length - 1]
-  service.socketService.sendMessage({
+  services.socketService.sendMessage({
     id: lastUserMessageId,
     delete: true,
   })
