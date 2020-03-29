@@ -1,5 +1,8 @@
 import { serve, exists } from './deps.ts';
-import { addSocket, clearLines } from './socket/socket.ts';
+import { getSocket } from './socket/socket.ts';
+import { RoomHelper } from './rooms/rooms.ts';
+
+const roomHelper = new RoomHelper();
 
 const port = Deno.args[0] || '8080';
 
@@ -54,11 +57,9 @@ for await (const req of serve(`:${port}`)) {
   try {
     if (req.url.includes('/api/room')) {
       const roomId = req.url.split('/').pop();
-      addSocket(req);
-    } else if (req.url === '/api/set-socket') {
-      addSocket(req);
-    } else if (req.url === '/api/clear') {
-      clearLines();
+      const room = roomHelper.getOrCreateRoom(roomId as string);
+      const socket = await getSocket(req);
+      room.addSocket(socket);
     } else {
       let res;
       if (req.url === '/') {

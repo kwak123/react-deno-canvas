@@ -11,14 +11,14 @@ interface Line {
 }
 
 interface DeleteLineRequest {
-  id?: string;
+  id: string;
   delete: boolean;
 }
 
 interface Room {
   sockets: Set<WebSocket>;
   lines: Line[];
-  addSocket: (socket: WebSocket) => void;
+  addSocket: (socket: WebSocket) => Promise<void>;
   deleteSocket: (socket: WebSocket) => void;
   updateSockets: () => void;
   addLine: (line: Line) => void;
@@ -34,8 +34,21 @@ class RoomImpl implements Room {
     this.lines = [];
   }
 
-  addSocket(socket: WebSocket) {
+  async addSocket(socket: WebSocket) {
     this.sockets.add(socket);
+    this.updateSockets();
+
+    for await (const event of socket.receive()) {
+      if (typeof event === 'string') {
+        const line = JSON.parse(event);
+        if (line.delete) {
+          this.deleteLine((line as DeleteLineRequest).id);
+        } else {
+          this.addLine(line);
+        }
+        this.updateSockets();
+      }
+    }
   }
 
   deleteSocket(socket: WebSocket) {
@@ -61,11 +74,12 @@ class RoomImpl implements Room {
   }
 }
 
-class RoomHelper {
+export class RoomHelper {
   getOrCreateRoom(roomId: string) {
     if (!rooms.has(roomId)) {
+      const room = new RoomImpl();
+      rooms.set(roomId, room);
     }
+    return rooms.get(roomId) as Room;
   }
 }
-
-export default RoomHelper;

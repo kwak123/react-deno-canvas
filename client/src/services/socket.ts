@@ -4,7 +4,7 @@ import store from "../store"
 import { CanvasStroke } from "../store/canvas/reducers"
 
 // TODO: Fix this in the future
-const socketUrl = "wss://bcab44a0.ngrok.io/api/set-socket"
+const socketUrl = "wss://bcab44a0.ngrok.io/api/room/123"
 let socket: WebSocket
 
 export class SocketHelper {
