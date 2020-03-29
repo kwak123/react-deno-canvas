@@ -7,6 +7,7 @@ import { Container } from "./common"
 import { Room } from "../../services/rooms"
 
 import CanvasElement from "../canvas/CanvasElement"
+import { useHistory } from "react-router"
 
 interface RoomCardProps {
   room: Room
@@ -51,27 +52,30 @@ const PreviewHeader = styled.h4`
 
 const CanvasContainer = styled.div``
 
-const RoomCard: React.FC<RoomCardProps> = ({ room }) => (
-  <Container>
-    <RoomCardContainer>
-      <RoomTitleContainer>
-        <h3>{room.title || "Untitled"}</h3>
-      </RoomTitleContainer>
-      <UserCountContainer>
-        <p>Current Users: {room.count}</p>
-      </UserCountContainer>
-      <PreviewContainer>
-        <PreviewHeader>Preview</PreviewHeader>
-        <CanvasContainer>
-          <CanvasElement
-            scale={0.2}
-            strokes={room.lines}
-            allowDrawing={false}
-          />
-        </CanvasContainer>
-      </PreviewContainer>
-    </RoomCardContainer>
-  </Container>
-)
+const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
+  const history = useHistory()
+  return (
+    <Container onClick={() => history.push(`/room/${room.id}`)}>
+      <RoomCardContainer>
+        <RoomTitleContainer>
+          <h3>{room.title || "Untitled"}</h3>
+        </RoomTitleContainer>
+        <UserCountContainer>
+          <p>Current Users: {room.count}</p>
+        </UserCountContainer>
+        <PreviewContainer>
+          <PreviewHeader>Preview</PreviewHeader>
+          <CanvasContainer>
+            <CanvasElement
+              scale={0.2}
+              strokes={room.lines}
+              allowDrawing={false}
+            />
+          </CanvasContainer>
+        </PreviewContainer>
+      </RoomCardContainer>
+    </Container>
+  )
+}
 
 export default RoomCard

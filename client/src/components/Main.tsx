@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
-import { BrowserRouter, Switch, Route } from "react-router-dom"
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom"
 
 import RoomList from "./roomList/RoomList"
 import Canvas from "./canvas/Canvas"
@@ -57,16 +57,18 @@ const Content = styled.article`
 class Main extends React.Component {
   render() {
     return (
-      <Container>
-        <Header>
-          <LogoContainer>
-            <Logo src={athenaLogo} />
-            <Title>Simple React Canvas</Title>
-          </LogoContainer>
-        </Header>
-        <ContentContainer>
-          <Content>
-            <BrowserRouter>
+      <BrowserRouter>
+        <Container>
+          <Header>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <LogoContainer>
+                <Logo src={athenaLogo} />
+                <Title>Simple React Canvas</Title>
+              </LogoContainer>
+            </Link>
+          </Header>
+          <ContentContainer>
+            <Content>
               <Switch>
                 <Route path="/room/:roomId">
                   <Canvas />
@@ -75,10 +77,10 @@ class Main extends React.Component {
                   <RoomList roomList={mockRoomList} />
                 </Route>
               </Switch>
-            </BrowserRouter>
-          </Content>
-        </ContentContainer>
-      </Container>
+            </Content>
+          </ContentContainer>
+        </Container>
+      </BrowserRouter>
     )
   }
 }
