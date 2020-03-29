@@ -52,7 +52,10 @@ const tryToServeFile = async (fileName: string) => {
 
 for await (const req of serve(`:${port}`)) {
   try {
-    if (req.url === '/api/set-socket') {
+    if (req.url.includes('/api/room')) {
+      const roomId = req.url.split('/').pop();
+      addSocket(req);
+    } else if (req.url === '/api/set-socket') {
       addSocket(req);
     } else if (req.url === '/api/clear') {
       clearLines();
