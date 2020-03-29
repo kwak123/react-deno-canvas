@@ -1,8 +1,7 @@
-import { serve, exists } from './deps.ts';
+import { serve, ServerRequest } from './deps.ts';
 import { getSocket } from './socket/socket.ts';
 import { RoomHelper } from './rooms/rooms.ts';
 import { getFileOrIndexHtml } from './helpers/files.ts';
-
 const roomHelper = new RoomHelper();
 
 const port = Deno.args[0] || '8080';
@@ -44,6 +43,8 @@ const tryToServeFile = async (fileName: string) => {
   }
 };
 
+const send404 = (req: ServerRequest) => req.respond({ status: 404 });
+
 for await (const req of serve(`:${port}`)) {
   try {
     if (req.url.includes('/api/room')) {
@@ -51,6 +52,15 @@ for await (const req of serve(`:${port}`)) {
       const room = roomHelper.getOrCreateRoom(roomId as string);
       const socket = await getSocket(req);
       room.addSocket(socket);
+    } else if (req.url === '/api/rooms') {
+      if (req.method === 'GET') {
+        req.respond({
+          status: 400,
+          body: JSON.stringify(roomHelper.getRoomNames()),
+        });
+      } else {
+        send404(req);
+      }
     } else {
       let res;
       if (req.url === '/') {

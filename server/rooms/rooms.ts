@@ -82,4 +82,7 @@ export class RoomHelper {
     }
     return rooms.get(roomId) as Room;
   }
+  getRoomNames() {
+    return rooms.keys();
+  }
 }
