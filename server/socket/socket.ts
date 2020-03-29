@@ -29,7 +29,7 @@ export const addSocket = async (request: ServerRequest) => {
       const line = JSON.parse(event);
       if (line.delete) {
         const deleteIndex = lines.findIndex(l => l.id === line.id);
-        if (deleteIndex > 0) {
+        if (deleteIndex >= 0) {
           lines.splice(deleteIndex, 1);
         }
         updateSockets();
