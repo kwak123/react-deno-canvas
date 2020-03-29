@@ -76,7 +76,14 @@ for await (const req of serve(`:${port}`)) {
         const socket = await getSocket(req);
         room.addSocket(socket);
       } else if (roomId) {
-        req.respond({ status: 200 });
+        const room = roomHelper.getRoom(roomId);
+
+        if (!room) {
+          send404(req);
+        }
+
+        const roomBody = JSON.stringify(room);
+        req.respond({ status: 200, body: roomBody });
       } else {
         send404(req);
       }

@@ -117,4 +117,19 @@ export class RoomHelper {
     });
     return roomsAsSerializable;
   }
+
+  getRoom(roomId: string) {
+    const room = rooms.get(roomId);
+
+    if (!room) {
+      return null;
+    }
+
+    return {
+      id: roomId,
+      title: room.title,
+      count: room.count(),
+      lines: room.lines,
+    };
+  }
 }
