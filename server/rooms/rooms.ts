@@ -101,10 +101,20 @@ export class RoomHelper {
     }
     return rooms.get(roomId) as Room;
   }
-  getRoomNames() {
+  getRoomKeys() {
     return [...rooms.keys()];
   }
   getRooms() {
-    return [...rooms.entries()];
+    const roomKeys = this.getRoomKeys();
+    const roomsAsSerializable = roomKeys.map(key => {
+      const room = rooms.get(key) as Room;
+      return {
+        id: key,
+        title: room.title,
+        count: room.count,
+        lines: room.lines,
+      };
+    });
+    return roomsAsSerializable;
   }
 }

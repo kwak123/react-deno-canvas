@@ -61,7 +61,7 @@ for await (const req of serve(`:${port}`)) {
   try {
     if (req.url === '/api/rooms') {
       if (req.method === ReqMethod.GET) {
-        const body = JSON.stringify(roomHelper.getRoomNames());
+        const body = JSON.stringify(roomHelper.getRooms());
         req.respond({
           status: 200,
           body,
