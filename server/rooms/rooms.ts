@@ -68,9 +68,15 @@ class RoomImpl implements Room {
   }
 
   updateSockets() {
+    const socketsToDelete: WebSocket[] = [];
     this.sockets.forEach(socket => {
-      socket.send(JSON.stringify(this.lines));
+      if (socket.isClosed) {
+        socketsToDelete.push(socket);
+      } else {
+        socket.send(JSON.stringify(this.lines));
+      }
     });
+    socketsToDelete.forEach(socket => this.sockets.delete(socket));
   }
 }
 

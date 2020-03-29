@@ -45,21 +45,29 @@ const tryToServeFile = async (fileName: string) => {
 
 const send404 = (req: ServerRequest) => req.respond({ status: 404 });
 
+enum ReqMethod {
+  GET = 'GET',
+}
+
 for await (const req of serve(`:${port}`)) {
+  console.log(`Received ${req.method} request to ${req.url}`);
   try {
-    if (req.url.includes('/api/room')) {
-      const roomId = req.url.split('/').pop();
-      const room = roomHelper.getOrCreateRoom(roomId as string);
-      const socket = await getSocket(req);
-      room.addSocket(socket);
-    } else if (req.url === '/api/rooms') {
-      if (req.method === 'GET') {
+    if (req.url === '/api/rooms') {
+      if (req.method === ReqMethod.GET) {
+        const body = JSON.stringify(Array.from(roomHelper.getRoomNames()));
         req.respond({
-          status: 400,
-          body: JSON.stringify(roomHelper.getRoomNames()),
+          status: 200,
+          body,
         });
       } else {
         send404(req);
+      }
+    } else if (req.url.includes('/api/room')) {
+      const [, roomId] = req.url.match(/\/api\/room(\/[\d]+)?/)!;
+      if (roomId) {
+        const room = roomHelper.getOrCreateRoom(roomId as string);
+        const socket = await getSocket(req);
+        room.addSocket(socket);
       }
     } else {
       let res;
