@@ -8,6 +8,7 @@ import {
   sendStrokeToService,
 } from "../../store/canvas/actions"
 import { selectStrokes } from "../../store/canvas/selectors"
+import services from "../../services"
 
 const canvasHelper = new CanvasHelper()
 
@@ -36,10 +37,15 @@ const Canvas = () => {
     dispatch(undoStrokeFromService())
   }
 
+  const hardUndo = () => {
+    services.socketService.sendMessage({ forceDelete: true })
+  }
+
   // Ref can likely fix a lot of the bloat in here
   return (
     <>
       <button onClick={undoDraw}>Undo</button>
+      <button onClick={hardUndo}>Hard undo</button>
       <CanvasElement
         strokes={strokes}
         handleDrawStart={handleDrawStart}
