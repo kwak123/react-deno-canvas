@@ -7,11 +7,9 @@ import services from "./services"
 
 const App = () => {
   return (
-    <React.StrictMode>
-      <Provider store={store}>
-        <Main />
-      </Provider>
-    </React.StrictMode>
+    <Provider store={store}>
+      <Main />
+    </Provider>
   )
 }
 

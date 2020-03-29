@@ -19,7 +19,7 @@ const getMockService: () => AppService = () => ({
     closeSocket: jest.fn(),
   },
   roomsService: {
-    getRoomNames: jest.fn(),
+    getRooms: jest.fn().mockResolvedValue(null),
   },
 })
 

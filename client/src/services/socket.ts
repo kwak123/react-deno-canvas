@@ -15,10 +15,9 @@ export class SocketHelper {
       const socketUrl = `wss://${serverUrl}/api/room/${roomId}/set-socket`
       this.socket = new WebSocket(socketUrl)
       this.socket.onopen = () => {
-        console.log("Socket opening")
+        console.log(`Socket opening for ${roomId}`)
       }
       this.socket.onmessage = (message) => {
-        // console.log("message", message)
         const strokes: CanvasStroke[] = JSON.parse(message.data as string)
         store.dispatch(setStrokes(strokes))
       }
@@ -31,6 +30,8 @@ export class SocketHelper {
     this.socket.send(JSON.stringify(message))
   }
   closeSocket() {
+    console.log("Socket closing")
     this.socket.close()
+    this.socket = null
   }
 }

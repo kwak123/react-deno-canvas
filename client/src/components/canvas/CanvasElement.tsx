@@ -178,6 +178,10 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   }
 
   React.useEffect(() => {
+    clearCanvas()
+  }, [])
+
+  React.useEffect(() => {
     refreshCanvas()
   }, [strokes])
 

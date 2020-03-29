@@ -1,8 +1,10 @@
 import React from "react"
 import styled from "styled-components"
+import shortid from "shortid"
 
 import { Container } from "./common"
 import { COLORS } from "../styling"
+import { useHistory } from "react-router"
 
 const AddCardContainer = styled.div`
   background-color: ${COLORS.BLUE_OCEAN};
@@ -35,16 +37,20 @@ const CreateRoom = styled.button`
   height: fit-content;
 `
 
-const AddRoomCard = () => (
-  <Container>
-    <AddCardContainer>
-      <ButtonContainer>
-        <CreateRoom onClick={() => {}}>
-          <AddSignSpan>+</AddSignSpan>Create Room
-        </CreateRoom>
-      </ButtonContainer>
-    </AddCardContainer>
-  </Container>
-)
+const AddRoomCard = () => {
+  const history = useHistory()
+
+  return (
+    <Container onClick={() => history.push(`/room/${shortid.generate()}`)}>
+      <AddCardContainer>
+        <ButtonContainer>
+          <CreateRoom>
+            <AddSignSpan>+</AddSignSpan>Create Room
+          </CreateRoom>
+        </ButtonContainer>
+      </AddCardContainer>
+    </Container>
+  )
+}
 
 export default AddRoomCard
