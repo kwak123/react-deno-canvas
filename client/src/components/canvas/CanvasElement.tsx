@@ -34,9 +34,7 @@ interface CanvasElementProps {
   allowDrawing?: boolean
 }
 
-const HtmlCanvas = styled.canvas`
-  margin-right: 24px;
-`
+const HtmlCanvas = styled.canvas``
 
 const defaultWidth = 1320
 const defaultHeight = 720
@@ -204,7 +202,10 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   return (
     <HtmlCanvas
       ref={canvasRef}
-      style={{ touchAction: isMultiFinger ? "auto" : "pinch-zoom" }}
+      style={{
+        touchAction: isMultiFinger ? "auto" : "pinch-zoom",
+        marginRight: allowDrawing ? "24px" : 0,
+      }}
       width={Math.floor(defaultWidth * scale)}
       height={Math.floor(defaultHeight * scale)}
       onMouseDown={onMouseDown}

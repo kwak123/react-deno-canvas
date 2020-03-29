@@ -19,6 +19,7 @@ const ListContainer = styled.div`
   grid-row-gap: 32px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   justify-items: center;
+  margin-bottom: 16px;
 `
 
 const RoomList = () => {

@@ -5,6 +5,7 @@ import services from "../../services"
 
 import { undoStrokeFromService } from "../../store/canvas/actions"
 import { COLORS } from "../styling"
+import { useLocation } from "react-router"
 
 const Container = styled.div`
   display: flex;
@@ -61,6 +62,10 @@ const Divider = styled.div`
 `
 
 const Sidebar = () => {
+  // Oh this is SO unfortunate, need to find a way to fix this when I hvae time
+  const location = useLocation()
+  const showSidebar = location.pathname.includes("/room/")
+
   const dispatch = useDispatch()
   const undoDraw = () => {
     dispatch(undoStrokeFromService())
@@ -69,6 +74,11 @@ const Sidebar = () => {
   const hardUndo = () => {
     services.socketService.sendMessage({ forceDelete: true })
   }
+
+  if (!showSidebar) {
+    return null
+  }
+
   return (
     <Container>
       <Header>Tools</Header>

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react"
 import styled, { keyframes } from "styled-components"
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom"
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom"
 
 import RoomList from "./roomList/RoomList"
 import Room from "./room/Room"
