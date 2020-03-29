@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux"
 import services from "../../services"
 
 import { undoStrokeFromService } from "../../store/canvas/actions"
+import { COLORS } from "../styling"
 
 const Container = styled.div`
   display: flex;
@@ -17,10 +18,29 @@ const Container = styled.div`
   border: 1px black solid;
   border-radius: 4px;
   background-color: white;
+
+  @media only screen and (max-width: 640px) {
+    flex-direction: row;
+    justify-content: space-evenly;
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    border: none;
+    border-radius: 0px;
+    border-top: 1px ${COLORS.PURPLE_MUTE} solid;
+    z-index: 100;
+  }
 `
 
 const Header = styled.h4`
   margin-bottom: 8px;
+
+  @media only screen and (max-width: 640px) {
+    display: none;
+  }
 `
 
 const Icon = styled.button`
@@ -28,6 +48,12 @@ const Icon = styled.button`
   width: 48px;
   border: none;
   margin-bottom: 8px;
+`
+
+const Divider = styled.div`
+  width: 1px;
+  height: 48px;
+  background-color: ${COLORS.PURPLE_MUTE};
 `
 
 const Sidebar = () => {
@@ -43,6 +69,7 @@ const Sidebar = () => {
     <Container>
       <Header>Tools</Header>
       <Icon onClick={undoDraw}>Undo</Icon>
+      <Divider />
       <Icon onClick={hardUndo}>Hard Undo</Icon>
     </Container>
   )

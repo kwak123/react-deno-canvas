@@ -20,6 +20,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   width: fit-content;
+
+  @media only screen and (max-width: 640px) {
+    padding-bottom: 88px;
+  }
 `
 
 const RoomTitle = styled.h2``
