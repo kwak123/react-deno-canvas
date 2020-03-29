@@ -15,7 +15,12 @@ interface RoomQueryParams {
   roomId: string
 }
 
-const Container = styled.div``
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: fit-content;
+`
 
 const RoomTitle = styled.h2``
 

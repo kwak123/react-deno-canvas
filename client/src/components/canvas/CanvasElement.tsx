@@ -36,7 +36,7 @@ interface CanvasElementProps {
 
 const HtmlCanvas = styled.canvas``
 
-const defaultWidth = 1200
+const defaultWidth = 1320
 const defaultHeight = 720
 
 const CanvasElement: React.FC<CanvasElementProps> = ({
@@ -90,8 +90,8 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
 
   const onMouseDown = (event: MouseEvent) => {
     drawStart({
-      x: event.clientX,
-      y: event.clientY,
+      x: event.pageX,
+      y: event.pageY,
     })
   }
 
@@ -103,7 +103,7 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   const onMouseMove = (event: MouseEvent) => {
     if (shouldDraw && !isMultiFinger) {
       drawMove({
-        x: event.clientX,
+        x: event.pageX,
         y: event.clientY,
       })
     }
@@ -115,9 +115,9 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
       setShouldDraw(false)
     } else {
       setShouldDraw(true)
-      handleDrawStart({
-        clientX: event.touches[0].clientX,
-        clientY: event.touches[0].clientY,
+      drawStart({
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY,
       })
     }
   }
@@ -128,7 +128,7 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   }
 
   const onTouchMove = (event: TouchEvent) => {
-    if (shouldDraw && !isMultiFinger) {
+    if (!isMultiFinger) {
       drawMove({
         x: event.touches[0].clientX,
         y: event.touches[0].clientY,
@@ -139,7 +139,7 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   const clearCanvas = () => {
     const context = canvasRef.current.getContext("2d")
     context.fillStyle = "white"
-    context.fillRect(0, 0, 1200, 1200)
+    context.fillRect(0, 0, defaultWidth, defaultHeight)
   }
 
   const draw = (

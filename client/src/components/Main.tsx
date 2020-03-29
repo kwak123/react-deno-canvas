@@ -13,10 +13,14 @@ import athenaLogo from "../assets/athena-logo.png"
 const Container = styled.div``
 
 const Header = styled.header`
+  position: fixed;
+  top: 0;
+  width: 100%;
   background-color: ${COLORS.BLACK_NEAR};
   height: 64px;
   display: flex;
   align-item: flex-start;
+  z-index: 100;
 `
 
 const LogoContainer = styled.div`
@@ -40,12 +44,13 @@ const Title = styled.h1`
 `
 
 const ContentContainer = styled.div`
+  margin-top: 64px;
   display: flex;
   padding: 32px 24px 0;
   height: calc(100vh - 96px);
   width: calc(100vw - 48px);
 
-  @media only screen and (min-width: 1200px) {
+  @media only screen and (min-width: 1320px) {
     justify-content: center;
   }
 `
