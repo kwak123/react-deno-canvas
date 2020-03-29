@@ -58,12 +58,20 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   const [curr, setCurr] = useState<Position>({ x: 0, y: 0 })
 
   const drawStart = ({ x: clientX, y: clientY }: Position) => {
+    // The huge parentElement hardcode locks us into the existing dom tree, need to explore how to fix
     if (allowDrawing) {
       const { current: whiteboard } = canvasRef
-      const newX = clientX - whiteboard.offsetLeft
-      const newY = clientY - whiteboard.offsetTop
+      const newX =
+        clientX -
+        whiteboard.offsetLeft +
+        whiteboard.parentElement.parentElement.parentElement.scrollLeft
+      const newY =
+        clientY -
+        whiteboard.offsetTop +
+        whiteboard.parentElement.parentElement.parentElement.scrollTop
       setLast({ x: newX, y: newY })
       setCurr({ x: newX, y: newY })
+
       setShouldDraw(true)
 
       handleDrawStart({ clientX, clientY })
@@ -74,8 +82,14 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
     if (allowDrawing) {
       const { current: whiteboard } = canvasRef
       const { x: currX, y: currY } = curr
-      const newX = clientX - whiteboard.offsetLeft
-      const newY = clientY - whiteboard.offsetTop
+      const newX =
+        clientX -
+        whiteboard.offsetLeft +
+        whiteboard.parentElement.parentElement.parentElement.scrollLeft
+      const newY =
+        clientY -
+        whiteboard.offsetTop +
+        whiteboard.parentElement.parentElement.parentElement.scrollTop
       setLast({ x: currX, y: currY })
       setCurr({ x: newX, y: newY })
       draw(whiteboard.getContext("2d"), last, curr)
@@ -106,7 +120,7 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
     if (shouldDraw && !isMultiFinger) {
       drawMove({
         x: event.pageX,
-        y: event.clientY,
+        y: event.pageY,
       })
     }
   }
@@ -118,8 +132,8 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
     } else {
       setShouldDraw(true)
       drawStart({
-        x: event.touches[0].clientX,
-        y: event.touches[0].clientY,
+        x: event.touches[0].pageX,
+        y: event.touches[0].pageY,
       })
     }
   }
@@ -132,8 +146,8 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   const onTouchMove = (event: TouchEvent) => {
     if (!isMultiFinger) {
       drawMove({
-        x: event.touches[0].clientX,
-        y: event.touches[0].clientY,
+        x: event.touches[0].pageX,
+        y: event.touches[0].pageY,
       })
     }
   }

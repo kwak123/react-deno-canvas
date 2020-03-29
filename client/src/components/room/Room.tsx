@@ -51,7 +51,6 @@ const Room = () => {
   return (
     <Container>
       <h2>{room?.title || "Untitled"}</h2>
-      <Sidebar />
       <Canvas />
     </Container>
   )

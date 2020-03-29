@@ -22,12 +22,12 @@ const Container = styled.div`
   @media only screen and (max-width: 640px) {
     flex-direction: row;
     justify-content: space-evenly;
-    position: fixed;
+    position: sticky;
     top: auto;
     bottom: 0;
     left: 0;
-    width: 100%;
-    height: 64px;
+    width: 100vw;
+    height: 4rem;
     border: none;
     border-radius: 0px;
     border-top: 1px ${COLORS.PURPLE_MUTE} solid;
