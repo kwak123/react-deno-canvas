@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom"
 
 import RoomList from "./roomList/RoomList"
@@ -36,11 +36,36 @@ const Logo = styled.img`
   height: 48px;
 `
 
+const slideRight = keyframes`
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+`
+
 const Title = styled.h1`
   margin-left: 8px;
   color: ${COLORS.GRAY_ICE};
   font-family: ${TYPOGRAPHY.SEN};
   font-size: 24px;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    visibility: hidden;
+  }
+
+  &:hover::before {
+    visibility: visible;
+    animation: ${slideRight} 0.2s forwards cubic-bezier(0.37, 0, 0.63, 1);
+  }
 `
 
 const ContentContainer = styled.div`
@@ -55,6 +80,10 @@ const ContentContainer = styled.div`
   }
 `
 
+const LogoLink = styled(Link)`
+  text-decoration: none;
+`
+
 const Content = styled.article`
   max-width: 1320px;
   width: 1320px;
@@ -65,12 +94,12 @@ const Main = () => {
     <BrowserRouter>
       <Container>
         <Header>
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <LogoLink to="/">
             <LogoContainer>
               <Logo src={athenaLogo} />
               <Title>Simple React Canvas</Title>
             </LogoContainer>
-          </Link>
+          </LogoLink>
         </Header>
         <ContentContainer>
           <Content>
