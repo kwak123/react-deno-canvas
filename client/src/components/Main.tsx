@@ -96,12 +96,6 @@ const Content = styled.article`
 `
 
 const Main = () => {
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchRoomList())
-  })
-
   return (
     <BrowserRouter>
       <Container>

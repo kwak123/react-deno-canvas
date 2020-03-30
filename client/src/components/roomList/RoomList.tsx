@@ -7,6 +7,7 @@ import { RoomResponse } from "../../services/rooms"
 import HeartSpinner from "../loadingSpinner/HeartSpinner"
 import RoomCard from "./RoomCard"
 import AddRoomCard from "./AddRoomCard"
+import { fetchRoomList } from "../../store/rooms/actions"
 
 const Container = styled.div`
   display: flex;
@@ -25,8 +26,13 @@ const ListContainer = styled.div`
 `
 
 const RoomList = () => {
+  const dispatch = useDispatch()
   const roomList = useSelector(selectRoomList)
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    dispatch(fetchRoomList())
+  })
 
   const list = (
     <ListContainer>
