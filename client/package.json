@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "parcel index.html --out-dir ../dist/",
+    "start": "parcel index.html --out-dir ../server/dist/",
+    "build": "parcel build index.html --out-dir ../server/dist",
+    "build:docker": "parcel build index.html --out-dir ./server/dist",
     "lint": "tslint --project ./tsconfig.json"
   },
   "repository": {
