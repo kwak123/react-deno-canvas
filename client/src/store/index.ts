@@ -1,7 +1,6 @@
 import {
   createStore,
   combineReducers,
-  getDefaultMiddleware,
   ThunkAction,
   Action,
   applyMiddleware,
@@ -12,8 +11,6 @@ import thunk, { ThunkDispatch } from "redux-thunk"
 import canvasReducer, { CanvasStore } from "./canvas/reducers"
 import roomsReducer, { RoomsStore } from "./rooms/reducers"
 
-import service, { AppService } from "../services"
-
 export interface GlobalState {
   canvas: CanvasStore
   rooms: RoomsStore
@@ -22,14 +19,10 @@ export interface GlobalState {
 export type ServiceThunkResult<R> = ThunkAction<
   R,
   GlobalState,
-  AppService,
+  undefined,
   Action
 >
-export type ServiceThunkDispatch = ThunkDispatch<
-  GlobalState,
-  AppService,
-  Action
->
+export type ServiceThunkDispatch = ThunkDispatch<GlobalState, undefined, Action>
 
 const rootReducer = combineReducers({
   canvas: canvasReducer,
@@ -38,9 +31,9 @@ const rootReducer = combineReducers({
 const store = createStore(
   rootReducer,
   compose(
-    applyMiddleware(thunk.withExtraArgument(service))
-    // (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
-    //   (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+    applyMiddleware(thunk),
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+      (window as any).__REDUX_DEVTOOLS_EXTENSION__()
   )
 )
 

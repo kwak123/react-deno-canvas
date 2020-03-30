@@ -3,12 +3,8 @@ import { useSelector, useDispatch } from "react-redux"
 
 import CanvasElement, { DrawStartEvent, DrawMoveEvent } from "./CanvasElement"
 import { CanvasHelper } from "./canvasHelper"
-import {
-  undoStrokeFromService,
-  sendStrokeToService,
-} from "../../store/canvas/actions"
+import { sendStrokeToService } from "../../store/canvas/actions"
 import { selectStrokes } from "../../store/canvas/selectors"
-import services from "../../services"
 
 const canvasHelper = new CanvasHelper()
 

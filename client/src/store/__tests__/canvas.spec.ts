@@ -4,34 +4,18 @@ import {
   PreloadedState,
   combineReducers,
 } from "@reduxjs/toolkit"
-import thunk from "redux-thunk"
-import canvasReducer, { CanvasStroke } from "../canvas/reducers"
+import thunk, { ThunkDispatch } from "redux-thunk"
+import canvasReducer, { CanvasStroke, CanvasStore } from "../canvas/reducers"
 import { sendStrokeToService, undoStrokeFromService } from "../canvas/actions"
+import services from "../../services"
 
-import { AppService } from "../../services"
-import { GlobalState } from "../"
-
-const getMockService: () => AppService = () => ({
-  socketService: {
-    socket: null,
-    initializeSocket: jest.fn(),
-    sendMessage: jest.fn(),
-    closeSocket: jest.fn(),
-  },
-  roomsService: {
-    getRooms: jest.fn().mockResolvedValue(null),
-    getRoom: jest.fn().mockResolvedValue(null),
-  },
-})
+jest.mock("../../services")
 
 const getMockStore = (state = {}) => {
-  const mockService = getMockService()
   return createStore(
-    combineReducers({
-      canvas: canvasReducer,
-    }),
-    state as PreloadedState<GlobalState>,
-    applyMiddleware(thunk.withExtraArgument(mockService))
+    canvasReducer,
+    state as PreloadedState<CanvasStore>,
+    applyMiddleware(thunk)
   )
 }
 
@@ -52,11 +36,9 @@ xdescribe("canvas integration", () => {
     it("should add line to end of lines", () => {
       const oldPath: CanvasStroke = { id: "1", data: [[0, 0, 0, 0]] }
       const newPath: CanvasStroke = { id: "2", data: [[1, 1, 1, 1]] }
-      const state: GlobalState = {
-        canvas: {
-          strokes: [oldPath],
-          userStrokes: [oldPath.id],
-        },
+      const state: CanvasStore = {
+        strokes: [oldPath],
+        userStrokes: [oldPath.id],
       }
       const store = getMockStore(state)
       store.dispatch(sendStrokeToService(newPath))
@@ -72,11 +54,9 @@ xdescribe("canvas integration", () => {
   describe("undoPath", () => {
     it("should undo existing line", () => {
       const oldStroke: CanvasStroke = { id: "1", data: [[0, 0, 0, 0]] }
-      const state: GlobalState = {
-        canvas: {
-          strokes: [],
-          userStrokes: [oldStroke.id],
-        },
+      const state: CanvasStore = {
+        strokes: [],
+        userStrokes: [oldStroke.id],
       }
       const store = getMockStore(state)
       store.dispatch(undoStrokeFromService())
@@ -91,11 +71,9 @@ xdescribe("canvas integration", () => {
     it("should undo only the line", () => {
       const strokeToKeep: CanvasStroke = { id: "1", data: [[0, 0, 0, 0]] }
       const strokeToRemove: CanvasStroke = { id: "2", data: [[1, 1, 1, 1]] }
-      const state: GlobalState = {
-        canvas: {
-          strokes: [],
-          userStrokes: [strokeToKeep.id, strokeToRemove.id],
-        },
+      const state: CanvasStore = {
+        strokes: [],
+        userStrokes: [strokeToKeep.id, strokeToRemove.id],
       }
       const store = getMockStore(state)
       store.dispatch(undoStrokeFromService())

@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import styled, { keyframes } from "styled-components"
-import {
-  BrowserRouter,
-  Switch,
-  Route,
-  Link,
-  useLocation,
-} from "react-router-dom"
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import services from "../services"
+import { fetchRoomList } from "../store/rooms/actions"
 
 import RoomList from "./roomList/RoomList"
 import Room from "./room/Room"
+import Sidebar from "./room/Sidebar"
 import { COLORS, TYPOGRAPHY } from "./styling"
-import services from "../services"
 
 // @ts-ignore
 import athenaLogo from "../assets/athena-logo.png"
-import Sidebar from "./room/Sidebar"
 
 const Container = styled.div`
   overflow: hidden;
@@ -101,6 +97,12 @@ const Content = styled.article`
 `
 
 const Main = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchRoomList())
+  })
+
   return (
     <BrowserRouter>
       <Container>

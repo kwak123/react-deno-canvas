@@ -24,16 +24,14 @@ export interface SetStrokesAction extends Action<CANVAS_ACTION> {
 
 export const sendStrokeToService: (
   stroke: CanvasStroke
-) => ServiceThunkResult<any> = (stroke) => (dispatch, getState, service) => {
+) => ServiceThunkResult<any> = (stroke) => async (dispatch, getState) => {
   services.socketService.sendMessage(stroke)
   return dispatch(addStroke(stroke))
 }
 
-export const undoStrokeFromService: () => ServiceThunkResult<any> = () => (
-  dispatch,
-  getState,
-  service
-) => {
+export const undoStrokeFromService: () => ServiceThunkResult<
+  any
+> = () => async (dispatch, getState) => {
   const userStrokes = getState().canvas.userStrokes
   const lastUserMessageId = userStrokes[userStrokes.length - 1]
   services.socketService.sendMessage({

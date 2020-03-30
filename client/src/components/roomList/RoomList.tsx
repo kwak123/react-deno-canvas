@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
-import services from "../../services"
+import { selectRoomList } from "../../store/rooms/selectors"
 import { RoomResponse } from "../../services/rooms"
+
 import HeartSpinner from "../loadingSpinner/HeartSpinner"
 import RoomCard from "./RoomCard"
 import AddRoomCard from "./AddRoomCard"
@@ -23,16 +25,8 @@ const ListContainer = styled.div`
 `
 
 const RoomList = () => {
+  const roomList = useSelector(selectRoomList)
   const [isLoading, setIsLoading] = useState(false)
-  const [roomList, setRoomList] = useState([])
-
-  useEffect(() => {
-    setIsLoading(true)
-    services.roomsService.getRooms().then((roomResponse) => {
-      setIsLoading(false)
-      setRoomList(roomResponse)
-    })
-  }, [])
 
   const list = (
     <ListContainer>
