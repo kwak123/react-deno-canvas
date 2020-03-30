@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 
 import HeartSpinner from "../loadingSpinner/HeartSpinner"
 import { CanvasStroke } from "../../store/canvas/reducers"
+import { COLORS } from "../styling"
 
 interface Position {
   x: number
@@ -229,7 +230,7 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
       </HtmlCanvas>
       {showSpinner && (
         <SpinnerContainer>
-          <HeartSpinner />
+          <HeartSpinner backgroundColor={COLORS.BLACK_NEAR} />
         </SpinnerContainer>
       )}
     </>

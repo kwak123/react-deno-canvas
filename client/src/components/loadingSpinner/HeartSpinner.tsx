@@ -49,7 +49,7 @@ const getHeartInner = (backgroundColor: string) => {
       display: block;
       width: 32px;
       height: 32px;
-      background: #fff;
+      background: ${backgroundColor};
     }
 
     &:before {
