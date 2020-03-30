@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { useDispatch } from "react-redux"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 
 import services from "../../services"
 import { Room } from "../../services/rooms"
@@ -16,6 +16,18 @@ interface RoomQueryParams {
   roomId: string
 }
 
+const errorSlideDown = keyframes`
+0% {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+100% {
+  opacity: 1;
+  transform: translateY(0);
+}
+`
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -27,16 +39,36 @@ const Container = styled.div`
   }
 `
 
-const RoomTitle = styled.h2``
+const RoomTitle = styled.h2`
+  font-size: 28px;
+  margin-bottom: 24px;
+  align-self: center;
+  color: ${COLORS.WHITE_CREAM};
+
+  @media only screen and (max-width: 1200px) {
+    align-self: flex-start;
+  }
+`
+
+const RoomErrorSpacer = styled.div`
+  height: 74px;
+`
 
 const RoomErrorContainer = styled.div`
   background-color: ${COLORS.BLACK_NEAR};
-  font-size: 24px;
+  font-size: 1.125rem;
   border-radius: 4px;
   width: fit-content;
   padding: 16px 20px;
   margin-bottom: 24px;
   transition: height 0.5s;
+  align-self: center;
+  animation: ${errorSlideDown} 0.5s linear forwards;
+
+  @media only screen and (max-width: 1200px) {
+    align-self: flex-start;
+    font-size: 0.875rem;
+  }
 `
 
 const RoomError = styled.h3`
@@ -51,6 +83,10 @@ const Room = () => {
   const [showSpinner, setShowSpinner] = useState(true)
   const [error, setError] = useState<string>(null)
 
+  useEffect(function changeBackground() {
+    document.body.style.setProperty("background-color", COLORS.BLUE_OCEAN)
+  })
+
   useEffect(() => {
     setShowSpinner(true)
     services.socketService.initializeSocket(roomId, (success: boolean) => {
@@ -64,7 +100,7 @@ const Room = () => {
           })
           .catch((e) => {
             console.error(e)
-            setError("Sorry, we weren't able to get details for this room")
+            setError("Sorry, we couldn't get room details")
           })
       } else {
         setError("Uh oh! We're having trouble connecting you to this room")
@@ -78,10 +114,12 @@ const Room = () => {
 
   return (
     <Container>
-      {error?.length > 0 && (
+      {error?.length > 0 ? (
         <RoomErrorContainer>
           <RoomError>{error}</RoomError>
         </RoomErrorContainer>
+      ) : (
+        <RoomErrorSpacer />
       )}
       <RoomTitle>{room?.title || "Untitled"}</RoomTitle>
       <Canvas showSpinner={showSpinner} />

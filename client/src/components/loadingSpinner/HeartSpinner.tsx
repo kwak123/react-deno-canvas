@@ -32,37 +32,39 @@ const HeartOuter = styled.div`
   transform-origin: 40px 40px;
 `
 
-const getHeartInner = (backgroundColor: string) => {
-  return styled.div`
-    top: 32px;
-    left: 32px;
+interface HeartInnerProps {
+  backgroundColor: string
+}
+
+const HeartInner = styled.div<HeartInnerProps>`
+  top: 32px;
+  left: 32px;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: ${(props) => props.backgroundColor};
+  animation: ${ldsHeart} 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  &:after,
+  &:before {
+    content: " ";
     position: absolute;
+    display: block;
     width: 32px;
     height: 32px;
-    background: ${backgroundColor};
-    animation: ${ldsHeart} 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+    background: ${(props) => props.backgroundColor};
+  }
 
-    &:after,
-    &:before {
-      content: " ";
-      position: absolute;
-      display: block;
-      width: 32px;
-      height: 32px;
-      background: ${backgroundColor};
-    }
+  &:before {
+    left: -24px;
+    border-radius: 50% 0 0 50%;
+  }
 
-    &:before {
-      left: -24px;
-      border-radius: 50% 0 0 50%;
-    }
-
-    &:after {
-      top: -24px;
-      border-radius: 50% 50% 0 0;
-    }
-  `
-}
+  &:after {
+    top: -24px;
+    border-radius: 50% 50% 0 0;
+  }
+`
 
 interface HeartSpinnerProps {
   backgroundColor?: COLORS
@@ -70,10 +72,9 @@ interface HeartSpinnerProps {
 const HeartSpinner: React.FC<HeartSpinnerProps> = ({
   backgroundColor = COLORS.WHITE_PLAIN,
 }) => {
-  const HeartInner = getHeartInner(backgroundColor)
   return (
     <HeartOuter>
-      <HeartInner />
+      <HeartInner backgroundColor={backgroundColor} />
     </HeartOuter>
   )
 }
