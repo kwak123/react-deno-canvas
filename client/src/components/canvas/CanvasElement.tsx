@@ -38,7 +38,9 @@ interface CanvasElementProps {
 
 const HtmlCanvas = styled.canvas``
 
-const SpinnerContainer = styled.div``
+const SpinnerContainer = styled.div`
+  position: absolute;
+`
 
 const defaultWidth = 1320
 const defaultHeight = 720

@@ -1,5 +1,6 @@
 import React from "react"
 import styled, { keyframes } from "styled-components"
+import { COLORS } from "../styling"
 
 const ldsHeart = keyframes`
 0% {
@@ -31,40 +32,50 @@ const HeartOuter = styled.div`
   transform-origin: 40px 40px;
 `
 
-const HeartInner = styled.div`
-  top: 32px;
-  left: 32px;
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  background: #fff;
-  animation: ${ldsHeart} 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
-
-  &:after,
-  &:before {
-    content: " ";
+const getHeartInner = (backgroundColor: string) => {
+  return styled.div`
+    top: 32px;
+    left: 32px;
     position: absolute;
-    display: block;
     width: 32px;
     height: 32px;
-    background: #fff;
-  }
+    background: ${backgroundColor};
+    animation: ${ldsHeart} 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
 
-  &:before {
-    left: -24px;
-    border-radius: 50% 0 0 50%;
-  }
+    &:after,
+    &:before {
+      content: " ";
+      position: absolute;
+      display: block;
+      width: 32px;
+      height: 32px;
+      background: #fff;
+    }
 
-  &:after {
-    top: -24px;
-    border-radius: 50% 50% 0 0;
-  }
-`
+    &:before {
+      left: -24px;
+      border-radius: 50% 0 0 50%;
+    }
 
-const HeartSpinner = () => (
-  <HeartOuter>
-    <HeartInner />
-  </HeartOuter>
-)
+    &:after {
+      top: -24px;
+      border-radius: 50% 50% 0 0;
+    }
+  `
+}
+
+interface HeartSpinnerProps {
+  backgroundColor?: COLORS
+}
+const HeartSpinner: React.FC<HeartSpinnerProps> = ({
+  backgroundColor = COLORS.WHITE_PLAIN,
+}) => {
+  const HeartInner = getHeartInner(backgroundColor)
+  return (
+    <HeartOuter>
+      <HeartInner />
+    </HeartOuter>
+  )
+}
 
 export default HeartSpinner
