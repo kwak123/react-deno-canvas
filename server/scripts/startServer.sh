@@ -1,1 +1,1 @@
-deno run --allow-net --allow-read --allow-write ./index.ts 3001
+deno run --allow-net --allow-read --allow-write --allow-env ./index.ts 3001

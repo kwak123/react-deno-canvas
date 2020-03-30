@@ -1,0 +1,1 @@
+deno fetch /app/server/deps.ts --lock=lock.json --reload --lock-write
