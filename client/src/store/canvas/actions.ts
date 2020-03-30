@@ -5,9 +5,9 @@ import { ServiceThunkResult } from "../index"
 import services from "../../services"
 
 export enum CANVAS_ACTION {
-  ADD_STROKE,
-  UNDO_STROKE,
-  SET_STROKES,
+  ADD_STROKE = "ADD_STROKE",
+  UNDO_STROKE = "UNDO_STROKE",
+  SET_STROKES = "SET_STROKES",
 }
 
 export interface AddLineAction extends Action<CANVAS_ACTION> {

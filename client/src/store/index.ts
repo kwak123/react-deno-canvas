@@ -10,11 +10,13 @@ import {
 import thunk, { ThunkDispatch } from "redux-thunk"
 
 import canvasReducer, { CanvasStore } from "./canvas/reducers"
+import roomsReducer, { RoomsStore } from "./rooms/reducers"
 
 import service, { AppService } from "../services"
 
 export interface GlobalState {
   canvas: CanvasStore
+  rooms: RoomsStore
 }
 
 export type ServiceThunkResult<R> = ThunkAction<
@@ -31,6 +33,7 @@ export type ServiceThunkDispatch = ThunkDispatch<
 
 const rootReducer = combineReducers({
   canvas: canvasReducer,
+  rooms: roomsReducer,
 })
 const store = createStore(
   rootReducer,
