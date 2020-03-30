@@ -37,10 +37,14 @@ interface CanvasElementProps {
   showSpinner?: boolean
 }
 
-const HtmlCanvas = styled.canvas``
+const HtmlCanvas = styled.canvas`
+  position: relative;
+`
 
 const SpinnerContainer = styled.div`
-  position: absolute;
+  position: relative;
+  top: -96px;
+  left: 16px;
 `
 
 const defaultWidth = 1320
@@ -230,7 +234,7 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
       </HtmlCanvas>
       {showSpinner && (
         <SpinnerContainer>
-          <HeartSpinner backgroundColor={COLORS.BLACK_NEAR} />
+          <HeartSpinner backgroundColor={COLORS.PURPLE_MUTE} />
         </SpinnerContainer>
       )}
     </>

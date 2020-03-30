@@ -8,6 +8,8 @@ export enum COLORS {
   BLUE_DARK = "#0E2692",
   BLUE_OCEAN = "#3C5FA6",
   WHITE_PLAIN = "#FFFFFF",
+  RED_BRIGHT = "#F62A53",
+  BLACK_CURRANT = "#362B3F",
 }
 
 export enum TYPOGRAPHY {

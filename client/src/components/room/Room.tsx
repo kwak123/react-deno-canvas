@@ -10,6 +10,7 @@ import { setStrokes } from "../../store/canvas/actions"
 
 import Sidebar from "./Sidebar"
 import Canvas from "../canvas/Canvas"
+import { COLORS } from "../styling"
 
 interface RoomQueryParams {
   roomId: string
@@ -27,6 +28,20 @@ const Container = styled.div`
 `
 
 const RoomTitle = styled.h2``
+
+const RoomErrorContainer = styled.div`
+  background-color: ${COLORS.BLACK_NEAR};
+  font-size: 24px;
+  border-radius: 4px;
+  width: fit-content;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  transition: height 0.5s;
+`
+
+const RoomError = styled.h3`
+  color: ${COLORS.RED_BRIGHT};
+`
 
 const Room = () => {
   const dispatch = useDispatch()
@@ -49,11 +64,9 @@ const Room = () => {
           })
           .catch((e) => {
             console.error(e)
-            setShowSpinner(false)
             setError("Sorry, we weren't able to get details for this room")
           })
       } else {
-        setShowSpinner(false)
         setError("Uh oh! We're having trouble connecting you to this room")
       }
     })
@@ -65,7 +78,11 @@ const Room = () => {
 
   return (
     <Container>
-      {error?.length > 0 && <p>{error}</p>}
+      {error?.length > 0 && (
+        <RoomErrorContainer>
+          <RoomError>{error}</RoomError>
+        </RoomErrorContainer>
+      )}
       <RoomTitle>{room?.title || "Untitled"}</RoomTitle>
       <Canvas showSpinner={showSpinner} />
     </Container>
