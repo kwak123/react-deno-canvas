@@ -205,6 +205,16 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
 
   React.useEffect(() => {
     clearCanvas()
+    // Bizarre workaround for Safari on iOS
+    canvasRef.current.addEventListener(
+      "touchmove",
+      (e) => {
+        if (e.touches.length <= 1) {
+          e.preventDefault()
+        }
+      },
+      { passive: false }
+    )
   }, [])
 
   React.useEffect(() => {
