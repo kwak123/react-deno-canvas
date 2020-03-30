@@ -1,21 +1,14 @@
-import {
-  serve,
-  ServerRequest,
-  isWebSocketPingEvent,
-  isWebSocketPongEvent,
-} from './deps.ts';
+import { serve, ServerRequest } from './deps.ts';
 import { getSocket } from './socket/socket.ts';
 import { RoomHelper } from './rooms/rooms.ts';
 import { getFileOrIndexHtml } from './helpers/files.ts';
 import { getRoomIdRegex } from './helpers/regex.ts';
 
-const roomHelper = new RoomHelper();
-
-const port = Deno.args[0] || '8080';
+const port = Deno.args[0] || '3001';
 
 console.log(`Server listening on port ${port}`);
 const tryToServeFile = async (fileName: string) => {
-  const distDirectory = `${Deno.cwd()}/../dist`;
+  const distDirectory = `${Deno.cwd()}/dist`;
   try {
     const gottenFile = await getFileOrIndexHtml(distDirectory, fileName);
     if (!gottenFile) {
@@ -55,7 +48,7 @@ const send404 = (req: ServerRequest) => req.respond({ status: 404 });
 enum ReqMethod {
   GET = 'GET',
 }
-
+const roomHelper = new RoomHelper();
 await roomHelper.initializeRooms();
 
 for await (const req of serve(`:${port}`)) {

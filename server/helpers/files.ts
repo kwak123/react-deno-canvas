@@ -1,4 +1,4 @@
-import { exists } from 'https://deno.land/std@v0.36.0/fs/exists.ts';
+import { exists } from '../deps.ts';
 const cleanFileName = (fileName: string) => {
   if (fileName[0] === '/') {
     return fileName.slice(1);

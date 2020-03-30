@@ -1,7 +1,7 @@
 import { WebSocket } from '../deps.ts';
-import { isWebSocketCloseEvent } from 'https://deno.land/std@v0.36.0/ws/mod.ts';
+import { isWebSocketCloseEvent } from '../deps.ts';
 import { RedisHelper } from '../redis/helper.ts';
-import { red } from 'https://deno.land/std@v0.38.0/fmt/colors.ts';
+
 const redisHelper = new RedisHelper();
 const rooms: Map<string, Room> = new Map();
 
