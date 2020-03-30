@@ -16,6 +16,7 @@ interface RoomCardProps {
 const RoomCardContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   padding: 24px;
   height: calc(100% - 48px);
@@ -57,12 +58,14 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   return (
     <Container onClick={() => history.push(`/room/${room.id}`)}>
       <RoomCardContainer>
-        <RoomTitleContainer>
-          <h3>{room.title || "Untitled"}</h3>
-        </RoomTitleContainer>
-        <UserCountContainer>
-          <p>Current Users: {room.count}</p>
-        </UserCountContainer>
+        <div>
+          <RoomTitleContainer>
+            <h3>{room.title || "Untitled"}</h3>
+          </RoomTitleContainer>
+          <UserCountContainer>
+            <p>Current Users: {room.count}</p>
+          </UserCountContainer>
+        </div>
         <PreviewContainer>
           <PreviewHeader>Preview</PreviewHeader>
           <CanvasContainer>

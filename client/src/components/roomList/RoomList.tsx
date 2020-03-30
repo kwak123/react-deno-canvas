@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
-import { selectRoomList } from "../../store/rooms/selectors"
+import { selectRoomList, selectRoomLoading } from "../../store/rooms/selectors"
 import { RoomResponse } from "../../services/rooms"
 
 import HeartSpinner from "../loadingSpinner/HeartSpinner"
 import RoomCard from "./RoomCard"
 import AddRoomCard from "./AddRoomCard"
 import { fetchRoomList } from "../../store/rooms/actions"
+import { selectStrokes } from "src/store/canvas/selectors"
 
 const Container = styled.div`
   display: flex;
@@ -28,11 +29,11 @@ const ListContainer = styled.div`
 const RoomList = () => {
   const dispatch = useDispatch()
   const roomList = useSelector(selectRoomList)
-  const [isLoading, setIsLoading] = useState(false)
+  const roomLoading = useSelector(selectRoomLoading)
 
   useEffect(() => {
     dispatch(fetchRoomList())
-  })
+  }, [])
 
   const list = (
     <ListContainer>
@@ -43,7 +44,7 @@ const RoomList = () => {
     </ListContainer>
   )
 
-  return <Container>{isLoading ? <HeartSpinner /> : list}</Container>
+  return <Container>{roomLoading ? <HeartSpinner /> : list}</Container>
 }
 
 export default RoomList
