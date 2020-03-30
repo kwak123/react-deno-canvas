@@ -40,7 +40,7 @@ const Canvas: React.FC<CanvasProps> = ({ showSpinner = false }) => {
       handleDrawStart={handleDrawStart}
       handleDrawMove={handleDrawMove}
       handleDrawStop={handleDrawStop}
-      allowDrawing={true}
+      allowDrawing={!showSpinner && true}
       showSpinner={showSpinner}
     />
   )
