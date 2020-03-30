@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import styled, { keyframes } from "styled-components"
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import services from "../services"
 import { fetchRoomList } from "../store/rooms/actions"
 
 import RoomList from "./roomList/RoomList"

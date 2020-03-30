@@ -1,5 +1,6 @@
 import { AnyAction, Reducer } from "@reduxjs/toolkit"
 import { ROOM_ACTION, SetRoomListAction } from "./actions"
+// import { ROOM_ACTION } from "../canvas/actions"
 import { RoomResponse } from "../../services/rooms"
 
 export interface RoomsStore {
@@ -8,10 +9,6 @@ export interface RoomsStore {
 
 const initialState: RoomsStore = {
   roomList: [],
-}
-
-enum test {
-  a = "1",
 }
 
 const roomsReducer: Reducer<RoomsStore, AnyAction> = (

@@ -1,5 +1,6 @@
 import { Reducer, Action } from "@reduxjs/toolkit"
 import { CANVAS_ACTION, AddLineAction, SetStrokesAction } from "./actions"
+import { RoomResponse } from "../../services/rooms"
 
 // lastX, lastY, currX, currY
 export type CanvasCoordinateTuple = [number, number, number, number]

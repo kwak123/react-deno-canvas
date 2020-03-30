@@ -18,9 +18,15 @@ export const fetchRoomList: () => ServiceThunkResult<any> = () => (
   dispatch,
   getState
 ) => {
-  return services.roomsService.getRooms().then((roomList) => {
-    dispatch({ type: ROOM_ACTION.SET_ROOM_LIST, roomList })
-  })
+  return services.roomsService
+    .getRooms()
+    .then((roomList) => {
+      dispatch(setRoomList(roomList))
+    })
+    .catch((e) => {
+      console.error(e)
+      dispatch(setRoomList([]))
+    })
 }
 
 const setRoomList: ActionCreator<SetRoomListAction> = (roomList: any) => ({
