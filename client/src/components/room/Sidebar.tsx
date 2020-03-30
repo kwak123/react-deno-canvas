@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import { useDispatch } from "react-redux"
 import services from "../../services"
 
@@ -49,6 +49,7 @@ const Icon = styled.button`
   width: 48px;
   border: none;
   margin-bottom: 8px;
+  background-color: transparent;
 `
 
 const Divider = styled.div`
@@ -85,6 +86,8 @@ const Sidebar = () => {
       <Icon onClick={undoDraw}>Undo</Icon>
       <Divider />
       <Icon onClick={hardUndo}>Hard Undo</Icon>
+      <Divider />
+      <Icon>Close Room</Icon>
     </Container>
   )
 }
