@@ -33,13 +33,28 @@ const Room = () => {
   const params = useParams<RoomQueryParams>()
   const roomId = params.roomId
   const [room, setRoom] = useState<Room>(null)
+  const [showSpinner, setShowSpinner] = useState(true)
+  const [error, setError] = useState<string>(null)
 
   useEffect(() => {
+    setShowSpinner(true)
     services.socketService.initializeSocket(roomId, (success: boolean) => {
       if (success) {
         services.roomsService
           .getRoom(roomId)
-          .then((roomFromApi) => setRoom(roomFromApi))
+          .then((roomFromApi) => {
+            setRoom(roomFromApi)
+            setShowSpinner(false)
+            setError(null)
+          })
+          .catch((e) => {
+            console.error(e)
+            setShowSpinner(false)
+            setError("Sorry, we weren't able to get details for this room")
+          })
+      } else {
+        setShowSpinner(false)
+        setError("Uh oh! We're having trouble connecting you to this room")
       }
     })
     return function clean() {
@@ -50,8 +65,9 @@ const Room = () => {
 
   return (
     <Container>
-      <h2>{room?.title || "Untitled"}</h2>
-      <Canvas />
+      {error?.length > 0 && <p>{error}</p>}
+      <RoomTitle>{room?.title || "Untitled"}</RoomTitle>
+      <Canvas showSpinner={showSpinner} />
     </Container>
   )
 }

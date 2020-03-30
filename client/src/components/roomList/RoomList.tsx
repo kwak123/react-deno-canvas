@@ -43,7 +43,7 @@ const RoomList = () => {
     </ListContainer>
   )
 
-  return <Container>{isLoading ? HeartSpinner : list}</Container>
+  return <Container>{isLoading ? <HeartSpinner /> : list}</Container>
 }
 
 export default RoomList

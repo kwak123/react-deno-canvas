@@ -2,6 +2,7 @@ import React, { useState, useRef, MouseEvent, TouchEvent } from "react"
 import styled from "styled-components"
 import { useSelector } from "react-redux"
 
+import HeartSpinner from "../loadingSpinner/HeartSpinner"
 import { CanvasStroke } from "../../store/canvas/reducers"
 
 interface Position {
@@ -32,9 +33,12 @@ interface CanvasElementProps {
   scale?: number
   strokes: CanvasStroke[]
   allowDrawing?: boolean
+  showSpinner?: boolean
 }
 
 const HtmlCanvas = styled.canvas``
+
+const SpinnerContainer = styled.div``
 
 const defaultWidth = 1320
 const defaultHeight = 720
@@ -48,6 +52,7 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   scale = 1,
   strokes,
   allowDrawing = true,
+  showSpinner = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [shouldDraw, setShouldDraw] = useState(false)
@@ -200,25 +205,32 @@ const CanvasElement: React.FC<CanvasElementProps> = ({
   }, [strokes])
 
   return (
-    <HtmlCanvas
-      ref={canvasRef}
-      style={{
-        touchAction: isMultiFinger ? "auto" : "pinch-zoom",
-        marginRight: allowDrawing ? "24px" : 0,
-      }}
-      width={Math.floor(defaultWidth * scale)}
-      height={Math.floor(defaultHeight * scale)}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseMove={onMouseMove}
-      onMouseOut={onMouseUp}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-      onTouchMove={onTouchMove}
-      onTouchCancel={onTouchEnd}
-    >
-      {/* Need to do fallback */}
-    </HtmlCanvas>
+    <>
+      <HtmlCanvas
+        ref={canvasRef}
+        style={{
+          touchAction: isMultiFinger ? "auto" : "pinch-zoom",
+          marginRight: allowDrawing ? "24px" : 0,
+        }}
+        width={Math.floor(defaultWidth * scale)}
+        height={Math.floor(defaultHeight * scale)}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onMouseMove={onMouseMove}
+        onMouseOut={onMouseUp}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        onTouchMove={onTouchMove}
+        onTouchCancel={onTouchEnd}
+      >
+        {/* Need to do fallback */}
+      </HtmlCanvas>
+      {showSpinner && (
+        <SpinnerContainer>
+          <HeartSpinner />
+        </SpinnerContainer>
+      )}
+    </>
   )
 }
 

@@ -67,4 +67,4 @@ const HeartSpinner = () => (
   </HeartOuter>
 )
 
-export default HeartSpinner()
+export default HeartSpinner

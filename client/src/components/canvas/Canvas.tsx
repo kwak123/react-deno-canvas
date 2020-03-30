@@ -12,8 +12,12 @@ import services from "../../services"
 
 const canvasHelper = new CanvasHelper()
 
+interface CanvasProps {
+  showSpinner?: boolean
+}
+
 /* Adapted from https://stackoverflow.com/a/8398189 */
-const Canvas = () => {
+const Canvas: React.FC<CanvasProps> = ({ showSpinner = false }) => {
   const dispatch = useDispatch()
   const strokes = useSelector(selectStrokes)
 
@@ -41,6 +45,7 @@ const Canvas = () => {
       handleDrawMove={handleDrawMove}
       handleDrawStop={handleDrawStop}
       allowDrawing={true}
+      showSpinner={showSpinner}
     />
   )
 }
