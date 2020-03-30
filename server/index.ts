@@ -56,6 +56,8 @@ enum ReqMethod {
   GET = 'GET',
 }
 
+await roomHelper.initializeRooms();
+
 for await (const req of serve(`:${port}`)) {
   // console.log(`Received ${req.method} request to ${req.url}`);
   try {
@@ -72,7 +74,7 @@ for await (const req of serve(`:${port}`)) {
     } else if (req.url.includes('/api/room')) {
       const [, roomId, shouldSetSocket] = req.url.match(getRoomIdRegex)!;
       if (roomId && shouldSetSocket) {
-        const room = roomHelper.getOrCreateRoom(roomId as string);
+        const room = await roomHelper.getOrCreateRoom(roomId as string);
         const socket = await getSocket(req);
         room.addSocket(socket);
       } else if (roomId) {

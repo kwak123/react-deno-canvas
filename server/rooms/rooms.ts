@@ -1,11 +1,14 @@
 import { WebSocket } from '../deps.ts';
 import { isWebSocketCloseEvent } from 'https://deno.land/std@v0.36.0/ws/mod.ts';
+import { RedisHelper } from '../redis/helper.ts';
+import { red } from 'https://deno.land/std@v0.38.0/fmt/colors.ts';
+const redisHelper = new RedisHelper();
 const rooms: Map<string, Room> = new Map();
 
 // lastx, lastY, currX, currY, color?
 declare type LineTuple = [number, number, number, number, number?];
 
-interface Line {
+export interface Line {
   id: string;
   data: LineTuple[];
 }
@@ -29,14 +32,22 @@ interface Room {
 }
 
 class RoomImpl implements Room {
+  roomId: string;
   sockets: Set<WebSocket>;
   lines: Line[];
   title: string;
 
-  constructor() {
+  constructor(roomId: string) {
+    this.roomId = roomId;
     this.sockets = new Set();
     this.lines = [];
     this.title = '';
+  }
+
+  async initialize() {
+    const redisRoom = await redisHelper.getOrCreateRoom(this.roomId);
+    this.lines = redisRoom.lines;
+    this.title = redisRoom.title;
   }
 
   async addSocket(socket: WebSocket) {
@@ -48,11 +59,11 @@ class RoomImpl implements Room {
       if (typeof event === 'string') {
         const line = JSON.parse(event);
         if (line.delete) {
-          this.deleteLine((line as DeleteLineRequest).id);
+          await this.deleteLine((line as DeleteLineRequest).id);
         } else if (line.forceDelete) {
-          this.lines.pop();
+          await this.popLine();
         } else {
-          this.addLine(line);
+          await this.addLine(line);
         }
         this.updateSockets();
       } else if (isWebSocketCloseEvent(event)) {
@@ -65,16 +76,22 @@ class RoomImpl implements Room {
     this.sockets.delete(socket);
   }
 
-  addLine(line: Line) {
+  async addLine(line: Line) {
     this.lines.push(line);
+    await redisHelper.updateRoomLines(this.roomId, this.lines);
   }
 
-  deleteLine(lineId: string) {
+  async deleteLine(lineId: string) {
     const lineIndex = this.lines.findIndex(line => line.id === lineId);
     if (lineIndex >= 0) {
       this.lines.splice(lineIndex, 1);
-      this.updateSockets();
     }
+    await redisHelper.updateRoomLines(this.roomId, this.lines);
+  }
+
+  async popLine() {
+    this.lines.pop();
+    await redisHelper.updateRoomLines(this.roomId, this.lines);
   }
 
   updateSockets() {
@@ -99,9 +116,14 @@ class RoomImpl implements Room {
 }
 
 export class RoomHelper {
-  getOrCreateRoom(roomId: string) {
+  async initializeRooms() {
+    const rooms = await redisHelper.getAllRooms();
+    await Promise.all(rooms.map(async room => this.getOrCreateRoom(room.id)));
+  }
+  async getOrCreateRoom(roomId: string) {
     if (!rooms.has(roomId)) {
-      const room = new RoomImpl();
+      const room = new RoomImpl(roomId);
+      await room.initialize();
       rooms.set(roomId, room);
     }
     return rooms.get(roomId) as Room;

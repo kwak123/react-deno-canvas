@@ -85,6 +85,9 @@ const Room = () => {
 
   useEffect(function changeBackground() {
     document.body.style.setProperty("background-color", COLORS.BLUE_OCEAN)
+    return function returnColor() {
+      document.body.style.removeProperty("background-color")
+    }
   })
 
   useEffect(() => {
