@@ -1,6 +1,7 @@
 import { WebSocket } from '../deps.ts';
 import { isWebSocketCloseEvent } from '../deps.ts';
 import { RedisHelper } from '../redis/helper.ts';
+import { getRandomName } from '../helpers/randomTitle.ts';
 
 const redisHelper = new RedisHelper();
 const rooms: Map<string, Room> = new Map();
@@ -47,7 +48,14 @@ class RoomImpl implements Room {
   async initialize() {
     const redisRoom = await redisHelper.getOrCreateRoom(this.roomId);
     this.lines = redisRoom.lines;
-    this.title = redisRoom.title;
+
+    if (!redisRoom.title) {
+      const randomName = getRandomName();
+      await redisHelper.updateRoomTitle(this.roomId, randomName);
+      this.title = randomName;
+    } else {
+      this.title = redisRoom.title;
+    }
   }
 
   async addSocket(socket: WebSocket) {

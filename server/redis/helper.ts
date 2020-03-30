@@ -13,8 +13,13 @@ const convertRedisHashToObj = (redisHash: string[]) => {
   for (let i = 0; i < redisHash.length - 1; i += 2) {
     const j = i + 1;
     const key = redisHash[i];
-    const value = JSON.parse(redisHash[j]);
-    obj[key] = value;
+    if (key === 'title') {
+      const value = redisHash[j];
+      obj[key] = value;
+    } else {
+      const value = JSON.parse(redisHash[j]);
+      obj[key] = value;
+    }
   }
 
   if (!obj.title) {
